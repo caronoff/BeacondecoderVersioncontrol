@@ -4,6 +4,7 @@
 import definitions
 import time
 
+# updated July 12, 2017
 
 def calcbch(binary,gx,b1start,b1end,b2end):        
     bchlist=list(binary[b1start:b1end] +'0'*(b2end-b1end))    

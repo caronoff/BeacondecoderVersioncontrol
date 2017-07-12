@@ -1,0 +1,25 @@
+1-20,00000000000000000000,Type Approval Certificate #:,0
+21-30,0000000000,Serial Number:,0
+31-40,0000000000,Country code:,0 Unknown MID
+41,0,Status of homing device:,"Beacon is not equipped with any homing signals or they have been deliberately disabled.  If beacon has been activated, no homing device is functional or it has been deliberately disabled"
+42,0,Self-test function:,Self-test transmission
+43,0,User cancellation:,Normal beacon operation (transmitting a distress or self-test message)
+44-66,00000000000000000000000,Latitude:,0.0 N
+67-90,000000000000000000000000,Longitude:,0.0 E
+91-93,000,Vessel ID:,No aircraft or maritime identity
+94-137,00000000000000000000000000000000000000000000,Spare:,All 0 - OK
+138-154,11111111111111111,Spare:,OK
+155-158 (Rotating field 1-4),0000,Rotating Field Type:,(#0) C/S G.008 Objective Requirements
+159-164 (Rotating field 5-10),000000,Elapsed time since activation:,0 hours
+165-175 (Rotating field 11-21),00000000000,Time from last encoded location:,0 minutes
+176-185 (Rotating field 22-31),0000011001,Altitude of encoded location: ,0 m
+186-189 (Rotating field 32-34),0000,HDOP:,DOP <=1
+190-193 (Rotating field 35-39),0000,VDOP:,DOP <=1
+194-194 (Rotating field 40-41),00,Automated/manual activation notification,Manual activation by user
+196-198 (Rotating field 42-44),000,Remaining battery capacity,<=5% remaining
+199-200 (Rotating field 45-46),00,GNSS status,No fix
+201-202 (Rotating field 47-48),00,Spare,OK
+,,Beacon 23 Hex ID:,80140000000000000000001
+,,Number of BCH errors:,0
+203-250,,BCH:,010011010100001001010100100000000110001111001010
+,,Beacon message:,00000000000000000000000000000000001FFFF0000003200004D42548063CA

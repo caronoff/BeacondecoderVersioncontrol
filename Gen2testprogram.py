@@ -64,7 +64,7 @@ print 'You entered: ' + str(countrycode) + ' ' +Func2.countryname(countrycode)
 ##BIT 41 Status of homing device
 while next_step == False:
     print '\nPlease enter homing status: '
-    print '0: Beacon is not equipped with any homing signals or they have been deliberately disabled.  If beacon has been activated, no homing device is functional or it has been deliberately disabled'
+    print '0: Beacon is not equipped with any homing signals or they have been deliberately disabled.\nIf beacon has been activated, no homing device is functional or it has been deliberately disabled'
     print '1: Beacon is equipped with at least one homing signal. If beacon has been activated, at least one homing device is functional and transmitting'
     userInput = raw_input()
     try:
@@ -159,7 +159,7 @@ while next_step == False:
         if len(bits_lat_degrees) != 22:
             print 'Error: input too long.'
         elif not Func2.isBinary(bits_lat_degrees):
-            print 'Error: inavlid input'
+            print 'Error: invalid input'
         else:
             bits_latitude = bits_latitude + bits_lat_degrees
             break

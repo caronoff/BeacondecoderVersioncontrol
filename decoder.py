@@ -274,7 +274,7 @@ class ThreadClassOpen(QThread):
 class ThreadClassSave(QThread):
     """
     Thread class is used to show progress bar since export can take several seconds.
-    Otherwise user may think the system is frozen.
+    Show progress to avoid perception of non-responsiveness.
     """
     def __init__(self, filename, filesave, secgen, parent=None):
         super(ThreadClassSave, self).__init__(parent)

@@ -4,6 +4,7 @@ import csv
 import Gen2secondgen as Gen2
 import decodefunctions as Func1
 import Gen2functions as Func2
+import wirtebch
 import definitions
 import math
 next_step = False
@@ -852,14 +853,18 @@ bits_maininfo = bits_tac + bits_serialnum + bits_countrycode + bits_status + bit
 
 
 testbits = bits_maininfo + rotatingfield
-BCH = Func2.calcBCH(testbits, 0, 202, 250)
+bchbase = bits_maininfo + rotatingfield
+BCH = Func2.calcBCH(bchbase, 0, 202, 250)
+bch2 = wirtebch.calcBCH(bchbase,0,202,250)
+print BCH == bch2
 
-testbits = testbits + '00' + BCH
+print bchbase
 print BCH
-print len(testbits)
+print bch2
 
 
-testhex = Func2.bin2hex(testbits)
+
+testhex = Func2.bin2hex(bchbase + '00' + BCH)
 print '\nYour beacon message is: ' + testhex
 
 
@@ -906,3 +911,8 @@ with open('my_beacon_excel.csv', 'w') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(['Bit Range', 'Bit Value', 'Number of Bits', 'Field Name', 'Field Value'])
     [writer.writerow(r) for r in newBeacon1.tablebin]
+    writer.writerow(['Information bits','\''+bchbase])
+    writer.writerow(['\''+'00'])
+    writer.writerow(['BCH','\''+BCH])
+    writer.writerow(['\''+bch2])
+

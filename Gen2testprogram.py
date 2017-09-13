@@ -1,6 +1,6 @@
 #Second Generation Beacon Decode Program
 import csv
-
+import sys
 import Gen2secondgen as Gen2
 import decodefunctions as Func1
 import Gen2functions as Func2
@@ -9,10 +9,18 @@ import definitions
 import math
 next_step = False
 
+
+
+
+
 ##BIT 1-20  Type Approval Certificate #
 # Ask for the user input and store it in userInput
+
 while next_step == False:
-    userInput = raw_input('\nPlease enter TAC (0 to 1,048,575): ')
+    try:
+        userInput = raw_input('\nPlease enter TAC (0 to 1,048,575): ')
+    except EOFError:
+        userInput = 0
     try:
         tac = int(userInput)
     # Catch the exception if the input was not a number
@@ -25,12 +33,15 @@ while next_step == False:
             print 'Error: input too high.'
         else:
             break
-print 'You entered: ' + str(Func2.bin2dec(bits_tac))
+print 'TAC# : {}  - binary: {}'.format(str(Func2.bin2dec(bits_tac)),bits_tac)
 
 
 ##BIT 21-30 Serial Number
 while next_step == False:
-    userInput = raw_input('\nPlease enter serial number (0 to 1023): ')
+    try:
+        userInput = raw_input('\nPlease enter serial number (0 to 1023): ')
+    except EOFError:
+        userInput = 0
     try:
         serialnum = int(userInput)
     except ValueError:
@@ -42,12 +53,15 @@ while next_step == False:
             print 'Error: input too high.'
         else:
             break
-print 'You entered: ' + str(Func2.bin2dec(bits_serialnum))
+print 'Serial Number: {} '.format(str(Func2.bin2dec(bits_serialnum)))
 
 
 ##BIT 31-40 Country code
 while next_step == False:
-    userInput = raw_input('\nPlease enter country code: ')
+    try:
+        userInput = raw_input('\nPlease enter country code: ')
+    except EOFError:
+        userInput = 0
     try:
         countrycode = int(userInput)
     except ValueError:
@@ -59,15 +73,18 @@ while next_step == False:
             print 'Error: input too high.'
         else:
             break
-print 'You entered: ' + str(countrycode) + ' ' +Func2.countryname(countrycode)
+print 'Country: {} - {}'.format(str(countrycode),Func2.countryname(countrycode))
 
 
 ##BIT 41 Status of homing device
 while next_step == False:
-    print '\nPlease enter homing status: '
-    print '0: Beacon is not equipped with any homing signals or they have been deliberately disabled.\nIf beacon has been activated, no homing device is functional or it has been deliberately disabled'
-    print '1: Beacon is equipped with at least one homing signal. If beacon has been activated, at least one homing device is functional and transmitting'
-    userInput = raw_input()
+
+    print '\nHoming Status\n0: Beacon is not equipped with any homing signals or deliberately disabled or if activated, homing device is nonfunctional'
+    print '1: Beacon is equipped with at least one homing signal. If beacon has been activated, homing device is functional and transmitting'
+    try:
+        userInput = raw_input('\nEnter homing status: ')
+    except EOFError:
+        userInput=0
     try:
         status = int(userInput)
     except ValueError:
@@ -78,7 +95,7 @@ while next_step == False:
         if len(bits_status) != 1:
             print 'Error: input too long.'
         elif not Func2.isBinary(bits_status):
-            print 'Error: inavlid input'
+            print 'Error: invalid input'
         else:
             break
 print 'You entered: ' + Func2.homing(bits_status)
@@ -86,10 +103,13 @@ print 'You entered: ' + Func2.homing(bits_status)
 
 ##BIT 42 Self-test function
 while next_step == False:
-    print '\nPlease enter self-test status: '
+    print '\nSelf-test status: '
     print '0: Self-test transmission'
     print '1: Normal beacon operation (transmitting a distress)'
-    userInput = raw_input()
+    try:
+        userInput = raw_input('Please enter self-test status:')
+    except EOFError:
+        userInput=0
     try:
         selftest = int(userInput)
     except ValueError:
@@ -100,7 +120,7 @@ while next_step == False:
         if len(bits_selftest) != 1:
             print 'Error: input too long.'
         elif not Func2.isBinary(bits_selftest):
-            print 'Error: inavlid input'
+            print 'Error: invalid input'
         else:
             break
 print 'You entered: ' + Func2.selfTest(bits_selftest)
@@ -111,7 +131,10 @@ while next_step == False:
     print '\nPlease enter user cancellation status: '
     print '0: Normal beacon operation (transmitting a distress or self-test message)'
     print '1: User cancellation message'
-    userInput = raw_input()
+    try:
+        userInput = raw_input()
+    except EOFError:
+        userInput=0
     try:
         cancel = int(userInput)
     except ValueError:
@@ -122,7 +145,7 @@ while next_step == False:
         if len(bits_cancel) != 1:
             print 'Error: input too long.'
         elif not Func2.isBinary(bits_cancel):
-            print 'Error: inavlid input'
+            print 'Error: invalid input'
         else:
             break
 print 'You entered: ' + str(bits_cancel)
@@ -133,7 +156,10 @@ while next_step == False:
     print '\nPlease enter N/S flag: '
     print '0: North'
     print '1: South'
-    userInput = raw_input()
+    try:
+        userInput = raw_input()
+    except EOFError:
+        userInput=0
     try:
         nsflag = int(userInput)
     except ValueError:
@@ -144,12 +170,15 @@ while next_step == False:
         if len(bits_latitude) != 1:
             print 'Error: input too long.'
         elif not Func2.isBinary(bits_latitude):
-            print 'Error: inavlid input'
+            print 'Error: invalid input'
         else:
             break
 
 while next_step == False:
-    userInput = raw_input('\nPlease enter latitude in degrees: ')
+    try:
+        userInput = raw_input('\nPlease enter latitude in degrees: ')
+    except EOFError:
+        userInput = 0
     try:
         lat_degrees = float(userInput)
     except ValueError:
@@ -173,7 +202,10 @@ while next_step == False:
     print '\nPlease enter E/W flag: '
     print '0: East'
     print '1: West'
-    userInput = raw_input()
+    try:
+        userInput = raw_input()
+    except EOFError:
+        userInput=0
     try:
         ewflag = int(userInput)
     except ValueError:
@@ -184,12 +216,15 @@ while next_step == False:
         if len(bits_longitude) != 1:
             print 'Error: input too long.'
         elif not Func2.isBinary(bits_longitude):
-            print 'Error: inavlid input'
+            print 'Error: invalid input'
         else:
             break
 
 while next_step == False:
-    userInput = raw_input('\nPlease enter longitude in degrees: ')
+    try:
+        userInput = raw_input('\nPlease enter longitude in degrees: ')
+    except EOFError:
+        userInput=0
     try:
         lon_degrees = float(userInput)
     except ValueError:
@@ -200,7 +235,7 @@ while next_step == False:
         if len(bits_lon_degrees) != 23:
             print 'Error: input too long.'
         elif not Func2.isBinary(bits_lon_degrees):
-            print 'Error: inavlid input'
+            print 'Error: invalid input'
         else:
             bits_longitude = bits_longitude + bits_lon_degrees
             break
@@ -219,11 +254,14 @@ while next_step == False:
     print '0: No aircraft or maritime identity'
     print '1: Maritime MMSI'
     print '2: Radio Call Sign'
-    print '3: Aricraft Registration Marking (Tail Number)'
+    print '3: Aircraft Registration Marking (Tail Number)'
     print '4: Aircraft Aviation 24 Bit Address'
     print '5: Aircraft Operator and Serial Number'
     print '6-7: Spare'
-    userInput = raw_input()
+    try:
+        userInput = raw_input()
+    except EOFError:
+        userInput=0
     try:
         vesselID = int(userInput)
     except ValueError:
@@ -234,7 +272,7 @@ while next_step == False:
         if len(bits_vesselID) != 3:
             print 'Error: input too long.'
         elif not Func2.isBinary(bits_vesselID):
-            print 'Error: inavlid input'
+            print 'Error: invalid input'
         else:
             break
 
@@ -270,7 +308,7 @@ elif vesselID == 1:
                 if len(bits_shipID) != 30:
                     print 'Error: input too long.'
                 elif not Func2.isBinary(bits_shipID):
-                    print 'Error: inavlid input'
+                    print 'Error: invalid input'
                 else:
                     break
 
@@ -286,7 +324,7 @@ elif vesselID == 1:
             if len(bits_mmsi) != 14:
                 print 'Error: input too long.'
             elif not Func2.isBinary(bits_mmsi):
-                print 'Error: inavlid input'
+                print 'Error: invalid input'
             else:
                 break
 
@@ -422,7 +460,10 @@ while next_step is False:
     print '3: National Use'
     print '4-14: Spare'
     print '15: Cancellation Message'
-    userInput = raw_input()
+    try:
+        userInput = raw_input(':')
+    except EOFError:
+        userInput = 0
     try:
         rotatingID = int(userInput)
     except ValueError:
@@ -445,7 +486,10 @@ if rotatingID == 0:
 
     ##BIT 5-10 (159-164) Elapsed time since activation (0 to 63 hours in 1 hour steps)
     while next_step is False:
-        userInput = raw_input('\nPlease enter elapsed time since activation (0 to 63 hours): ')
+        try:
+            userInput = raw_input('\nPlease enter elapsed time since activation (0 to 63 hours): ')
+        except EOFError:
+            userInput = 0
         try:
             elapsed_time = int(userInput)
         except ValueError:
@@ -463,7 +507,10 @@ if rotatingID == 0:
 
     ##BIT 11-21 (165-175) Time from last encoded location (0 to 2047 minutes in 1 minute steps)
     while next_step is False:
-        userInput = raw_input('\nPlease enter time from last encoded location (0 to 2047 minutes): ')
+        try:
+            userInput = raw_input('\nPlease enter time from last encoded location (0 to 2047 minutes): ')
+        except EOFError:
+            userInput = 0
         try:
             last_encoded_loc = int(userInput)
         except ValueError:
@@ -482,18 +529,23 @@ if rotatingID == 0:
 
     ##BIT 22-31 (176-185) Altitude of encoded location
     while next_step is False:
-        userInput = raw_input('\nPlease enter altitude in metres: ')
+
+        try:
+            userInput = raw_input('\nPlease enter altitude in metres (-400 to 15,952): ')
+        except EOFError:
+            userInput = 0
         try:
             altitude = int(userInput)
         except ValueError:
-            print 'Error: value must be an integer'
+            print 'Error: value must be an integer between -400 and 15,952'
             altitude = 0
+
         else:
             bits_altitude = Func1.dec2bin(int(round(float(altitude + 400)/16))).zfill(10)
             if len(bits_altitude) != 10:
-                print 'Error: input too long.'
+                print 'Error: Input too long. Must be an integer between -400 and 15,952'
             elif not Func2.isBinary(bits_altitude):
-                print 'Error: inavlid input'
+                print 'Error: invalid input'
             else:
                 break
     print 'You entered: ' + str(Func2.getaltitude(bits_altitude))
@@ -503,7 +555,10 @@ if rotatingID == 0:
 
     ##BIT 32-39 (186-193) Dilution of precision
     while next_step is False:
-        userInput = raw_input('\nPlease enter Horizontal Dilution of Precision. If HDOP not available, enter 1111: ')
+        try:
+            userInput = raw_input('\nPlease enter Horizontal Dilution of Precision. If HDOP not available, enter 1111: ')
+        except EOFError:
+            userInput = 0
         try:
             hdop = int(userInput)
         except ValueError:
@@ -543,12 +598,15 @@ if rotatingID == 0:
             else:
                 bits_hdop = '1110'
             break
-    print 'You entered: H' + Func2.getDOP(bits_hdop)
+    print 'You entered: V{}\nbinary: {}'.format(Func2.getDOP(bits_hdop), bits_hdop)
 
     bits_rotating0 += bits_hdop
 
     while next_step is False:
-        userInput = raw_input('\nPlease enter Vertical Dilution of Precision. If VDOP not available, enter 1111: ')
+        try:
+            userInput = raw_input('\nPlease enter Vertical Dilution of Precision. If VDOP not available, enter 1111: ')
+        except EOFError:
+            userInput = 0
         try:
             vdop = int(userInput)
         except ValueError:
@@ -588,30 +646,36 @@ if rotatingID == 0:
             else:
                 bits_vdop = '1110'
             break
-    print 'You entered: V' + Func2.getDOP(bits_vdop)
+    print 'You entered: V{}\nbinary: {}'.format(Func2.getDOP(bits_vdop),bits_vdop)
 
     bits_rotating0 += bits_vdop
 
 
     ##BIT 40-41 (194-195) Automated/manual activation notification
+
     while next_step is False:
-        print '\nPlease select activation method:'
-        for x in definitions.activation_note:
-            print (x) + ': ' + definitions.activation_note[x]
-        bits_activation = raw_input()
+
+        print '\nPlease select activation method:\n00: Manual activation by user\n01: Automatic activation by the beacon\n10: Automatic activation by external means\n11: Spare'
+
         try:
-            definitions.activation_note[bits_activation]
-        except KeyError:
-            print 'Error: invalid input'
+            bits_activation = raw_input()
+        except EOFError:
+            bits_activation = '22'
+        if bits_activation not in ['00','01','10','11']:
+            print "Invalid Entry"
+            pass
         else:
             break
-    print 'You entered: ' + definitions.activation_note[bits_activation]
+    print 'You entered: ' + bits_activation
 
     bits_rotating0 += bits_activation
 
     ##BIT 42-44 (196-198) Remaining battery capacity
     while next_step is False:
-        userInput = raw_input('\nPlease enter remaining batter capacity (%). If unavailable, enter 111: ')
+        try:
+            userInput = raw_input('\nPlease enter remaining batter capacity (%). If unavailable, enter 111: ')
+        except EOFError:
+            userInput = ''
         try:
             battery = int(userInput)
         except ValueError:
@@ -642,7 +706,10 @@ if rotatingID == 0:
         print '\nPlease select GNSS status:'
         for x in definitions.gnss_status:
             print (x) + ': ' + definitions.gnss_status[x]
-        bits_gnss = raw_input()
+        try:
+            bits_gnss = raw_input()
+        except EOFError:
+            bits_gnss = ''
         try:
             definitions.gnss_status[bits_gnss]
         except KeyError:
@@ -690,11 +757,11 @@ elif rotatingID == 1:
             print 'Error: value must be an integer'
             altitude = 0
         else:
-            bits_altitude = Func1.dec2bin(int((altitude + 400)/16)).zfill(10)
+            bits_altitude = Func1.dec2bin(int(round(float(altitude + 400) / 16))).zfill(10)
             if len(bits_altitude) != 10:
                 print 'Error: input too long.'
             elif not Func2.isBinary(bits_altitude):
-                print 'Error: inavlid input'
+                print 'Error: invalid input'
             else:
                 break
     print 'You entered: ' + str(Func2.getaltitude(bits_altitude))
@@ -867,6 +934,10 @@ print bch2
 testhex = Func2.bin2hex(bchbase + '00' + BCH)
 print '\nYour beacon message is: ' + testhex
 
+try:
+    x=raw_input("Done")
+except EOFError:
+    x=''
 
 newBeacon1 = Gen2.SecondGen(testhex)
 newBeacon1.processHex(testhex)

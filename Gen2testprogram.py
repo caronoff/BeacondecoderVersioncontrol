@@ -11,7 +11,7 @@ next_step = False
 
 
 
-
+print 'new version'
 
 ##BIT 1-20  Type Approval Certificate #
 # Ask for the user input and store it in userInput

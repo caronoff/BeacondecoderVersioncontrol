@@ -9,9 +9,12 @@ import definitions
 import math
 next_step = False
 
+f = open('outputfile.txt', 'w')
 
+def printtxt(txt):
+    print txt
+    f.write(txt)
 
-print 'new version'
 
 ##BIT 1-20  Type Approval Certificate #
 # Ask for the user input and store it in userInput
@@ -33,13 +36,14 @@ while next_step == False:
             print 'Error: input too high.'
         else:
             break
-print 'TAC# : {}  - binary: {}'.format(str(Func2.bin2dec(bits_tac)),bits_tac)
+printtxt('TAC# : {}  - binary: {}\n'.format(str(Func2.bin2dec(bits_tac)),bits_tac))
+
 
 
 ##BIT 21-30 Serial Number
 while next_step == False:
     try:
-        userInput = raw_input('\nPlease enter serial number (0 to 1023): ')
+        userInput = raw_input('\nPlease enter beacon serial number (0 to 1023): ')
     except EOFError:
         userInput = 0
     try:
@@ -53,7 +57,7 @@ while next_step == False:
             print 'Error: input too high.'
         else:
             break
-print 'Serial Number: {} '.format(str(Func2.bin2dec(bits_serialnum)))
+printtxt('Beacon serial number: {} - binary: {}\n'.format(str(Func2.bin2dec(bits_serialnum)),bits_serialnum))
 
 
 ##BIT 31-40 Country code
@@ -73,7 +77,7 @@ while next_step == False:
             print 'Error: input too high.'
         else:
             break
-print 'Country: {} - {}'.format(str(countrycode),Func2.countryname(countrycode))
+printtxt('Country: {} {} - binary: {}\n'.format(str(countrycode),Func2.countryname(countrycode),bits_countrycode))
 
 
 ##BIT 41 Status of homing device
@@ -98,7 +102,7 @@ while next_step == False:
             print 'Error: invalid input'
         else:
             break
-print 'You entered: ' + Func2.homing(bits_status)
+printtxt('Homing status: {} binary - {}\n'.format(Func2.homing(bits_status),bits_status))
 
 
 ##BIT 42 Self-test function
@@ -123,16 +127,18 @@ while next_step == False:
             print 'Error: invalid input'
         else:
             break
-print 'You entered: ' + Func2.selfTest(bits_selftest)
+printtxt('Self test status: {} binary - {}\n\n'.format(Func2.selfTest(bits_selftest),bits_selftest))
 
 
 ##BIT 43 User cancellation
 while next_step == False:
-    print '\nPlease enter user cancellation status: '
-    print '0: Normal beacon operation (transmitting a distress or self-test message)'
-    print '1: User cancellation message'
+
+    usercancel_list=['\n0: Normal beacon operation (transmitting a distress or self-test message)',
+                     '1: Test protocol message']
+    for i in usercancel_list:
+        print i
     try:
-        userInput = raw_input()
+        userInput = raw_input('\nPlease enter message status:')
     except EOFError:
         userInput=0
     try:
@@ -148,7 +154,7 @@ while next_step == False:
             print 'Error: invalid input'
         else:
             break
-print 'You entered: ' + str(bits_cancel)
+printtxt('User cancellation: {} - binary {}\n'.format(usercancel_list[cancel],bits_cancel))
 
 
 ##BIT 44-66 Latitude
@@ -194,7 +200,7 @@ while next_step == False:
             bits_latitude = bits_latitude + bits_lat_degrees
             break
 
-print 'You entered: ' + Func2.getlatitude(bits_latitude)[0]
+printtxt('Latitude: {} - binary {}\n'.format(Func2.getlatitude(bits_latitude)[0],bits_latitude))
 
 
 ##BIT 67-90 Longitude
@@ -239,7 +245,7 @@ while next_step == False:
         else:
             bits_longitude = bits_longitude + bits_lon_degrees
             break
-print 'You entered: ' + Func2.getlongitude(bits_longitude)[0]
+printtxt('Longitude: {} - binary {}\n'.format(Func2.getlongitude(bits_longitude)[0],bits_longitude))
 
 
 
@@ -250,16 +256,18 @@ print 'You entered: ' + Func2.getlongitude(bits_longitude)[0]
 ################################
 
 while next_step == False:
-    print '\nPlease enter a vessel ID: '
-    print '0: No aircraft or maritime identity'
-    print '1: Maritime MMSI'
-    print '2: Radio Call Sign'
-    print '3: Aircraft Registration Marking (Tail Number)'
-    print '4: Aircraft Aviation 24 Bit Address'
-    print '5: Aircraft Operator and Serial Number'
-    print '6-7: Spare'
+    vesselID_list=['0: No aircraft or maritime identity',
+                   '1: Maritime MMSI',
+                   '2: Radio Call Sign',
+                   '3: Aircraft Registration Marking (Tail Number)',
+                   '4: Aircraft Aviation 24 Bit Address',
+                   '5: Aircraft Operator and Serial Number',
+                   '6: Spare',
+                   '7: Spare']
+    for i in vesselID_list:
+        print i
     try:
-        userInput = raw_input()
+        userInput = raw_input('\nPlease enter a vessel ID:')
     except EOFError:
         userInput=0
     try:
@@ -276,6 +284,7 @@ while next_step == False:
         else:
             break
 
+printtxt('Vessel ID: {} {} - binary {}\n'.format(vesselID, vesselID_list[vesselID],bits_vesselID))
 
 ##############################################
 # Vessel 0: No aircraft or maritime identity #
@@ -304,7 +313,10 @@ elif vesselID == 1:
                 bits_shipID = Func1.dec2bin(ship_ID).zfill(30)
                 break
             else:
-                bits_shipID = Func1.dec2bin(ship_ID + (countrycode * 100000)).zfill(30)
+                bits_shipID = Func1.dec2bin(ship_ID + (countrycode * 1000000)).zfill(30)
+
+                printtxt('\nMMSI (MIDxxxxxx) :{}\nbinary: {}\n'.format(str(ship_ID + (countrycode * 1000000)),bits_shipID))
+
                 if len(bits_shipID) != 30:
                     print 'Error: input too long.'
                 elif not Func2.isBinary(bits_shipID):
@@ -313,22 +325,22 @@ elif vesselID == 1:
                     break
 
     while next_step is False:
-        userInput = raw_input('\nPlease enter the 4 digit MMSI of the EPIRB-AIS system. If there is no EPIRB-AIS system, enter 10922: ')
+        userInput = raw_input('\nEnter only the last 4 digit of the EPIRB-AIS system. If no EPIRB-AIS system, enter 10922: ')
         try:
-            mmsi = int(userInput)
+            mmsi_ais = int(userInput)
         except ValueError:
             print 'Error: value must be an integer'
-            mmsi = 0
+            mmsi_ais = 0
         else:
-            bits_mmsi = Func1.dec2bin(mmsi).zfill(14)
-            if len(bits_mmsi) != 14:
+            bits_mmsi_ais = Func1.dec2bin(mmsi_ais).zfill(14)
+            if len(bits_mmsi_ais) != 14:
                 print 'Error: input too long.'
-            elif not Func2.isBinary(bits_mmsi):
+            elif not Func2.isBinary(bits_mmsi_ais):
                 print 'Error: invalid input'
             else:
                 break
-
-    vessel_bits = bits_vesselID + bits_shipID + bits_mmsi
+    printtxt('\nEPIRB-AIS :{}\nbinary: {}\n'.format(str(mmsi_ais), bits_mmsi_ais))
+    vessel_bits = bits_vesselID + bits_shipID + bits_mmsi_ais
 
 
 #############################
@@ -340,16 +352,11 @@ elif vesselID == 2:
     while next_step is False:
         callsign = raw_input('\nPlease enter the 7 character radio call sign: ')
         if len(callsign) != 7:
-            print 'Error: call sign must be 7 characters'
-        callsign_bits = Func2.str2baudot(callsign).zfill(42)
-        if len(callsign_bits) != 42:
-            print 'Error: input too long.'
-        elif not Func2.isBinary(callsign_bits):
-            print 'Error: inavlid input'
+            print 'Error: call sign must be 7 characters (enter 7 [spaces] for blank)'
         else:
             break
-
-    print 'You entered: ' + Func2.getCallsign(callsign_bits)
+    callsign_bits = Func2.str2baudot(callsign).zfill(42)
+    printtxt('Call sign: {}\nbinary - {}\n'.format(Func2.getCallsign(callsign_bits),callsign_bits))
 
     vessel_bits = bits_vesselID + callsign_bits + '00'
 
@@ -364,15 +371,11 @@ elif vesselID == 3:
         tailnum = raw_input('\nPlease enter the 7 character tail number: ')
         if len(tailnum) != 7:
             print 'Error: tail number must be 7 characters'
-        tailnum_bits = Func2.str2baudot(tailnum).zfill(42)
-        if len(tailnum_bits) != 42:
-            print 'Error: input too long.'
-        elif not Func2.isBinary(tailnum_bits):
-            print 'Error: inavlid input'
         else:
             break
+    tailnum_bits = Func2.str2baudot(tailnum).zfill(42)
+    printtxt('Tail number: {}\nbinary - {}\n'.format(Func2.getTailNum(tailnum_bits), tailnum_bits))
 
-    print 'You entered: ' + Func2.getTailNum(tailnum_bits)
 
     vessel_bits = bits_vesselID + tailnum_bits + '00'
 
@@ -399,7 +402,8 @@ elif vesselID == 4:
             else:
                 break
 
-    print 'You entered: ' + str(Func1.bin2dec(bits_aviation_address))
+
+    printtxt('24 bit address: {}\nbinary - {}\n'.format(str(Func1.bin2dec(bits_aviation_address)), bits_aviation_address))
 
     vessel_bits = bits_vesselID + bits_aviation_address + ('0' * 20)
 
@@ -446,8 +450,13 @@ else:
     vessel_bits = bits_vesselID + ('0' * 44)
 
 
+
+printtxt('\n\nComplete Vessel Bits: {}\n'.format(vessel_bits))
+
 ##BIT 138-154 Spare bits [137-153]
+
 bits_spare = '1' * 17
+
 
 
 
@@ -900,6 +909,7 @@ elif rotatingID == 15:
     bits_rotating15 += bits_deactivation
 
     rotatingfield = bits_rotating15
+    bits_spare = '0' * 17
 
 
 ####################################
@@ -912,10 +922,20 @@ else:
 
     rotatingfield = bits_rotating4
 
-
-
-bits_maininfo = bits_tac + bits_serialnum + bits_countrycode + bits_status + bits_selftest + bits_cancel + bits_latitude + bits_longitude + vessel_bits + bits_spare
-
+printtxt('\nSpare bits: {}\n'.format(bits_spare))
+####################################################################################################################################################################################
+bits_maininfo = \
+    bits_tac + \
+    bits_serialnum + \
+    bits_countrycode + \
+    bits_status + \
+    bits_selftest + \
+    bits_cancel + \
+    bits_latitude + \
+    bits_longitude + \
+    vessel_bits + \
+    bits_spare
+####################################################################################################################################################################################
 
 
 

@@ -221,7 +221,7 @@ class SecondGen(Gen2Error):
                                       'Aircraft Registration Marking:',
                                       self.tailnum])
 
-                if Func.checkzeros(self.bits[135:137]):
+                if Func.checkzeros(self.bits[136:138]):
                     self.tablebin.append(['136-137',
                                           self.bits[136:138],
                                           'Spare:',
@@ -243,13 +243,13 @@ class SecondGen(Gen2Error):
                                       'Vessel ID:',
                                       'Aircraft Aviation 24 Bit Address'])
 
-                self.aviationBitAddress = Func.bin2dec(self.bits[93:117])
+                self.aviationBitAddress = Func.bin2dec(self.bits[94:118])
                 self.tablebin.append(['94-117',
                                       self.bits[94:118],
                                       'Aviation 24 bit address:',
                                       str(self.aviationBitAddress)])
 
-                if Func.checkzeros(self.bits[117:137]):
+                if Func.checkzeros(self.bits[118:138]):
                     self.tablebin.append(['118-137',
                                           self.bits[118:138],
                                           'Spare:',

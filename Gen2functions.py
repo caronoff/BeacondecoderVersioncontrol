@@ -367,6 +367,7 @@ def checkones(b):
 
 
 def checkzeros(a):
+
     """Checks if input string is all zeros
 
     Args:

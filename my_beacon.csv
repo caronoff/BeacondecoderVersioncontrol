@@ -1,26 +1,26 @@
 Bit Range,Bit Value,Field Name,Field Value
-1-20,00000000000011100110,Type Approval Certificate #:,230
-21-30,1000111101,Serial Number:,573
-31-40,0011001001,Country code:,201 Albania
-41,1,Status of homing device:,"Beacon is equipped with at least one homing signal. If beacon has been activated, at least one homing device is functional and transmitting"
+1-20,00000000000001100100,Type Approval Certificate #:,100
+21-30,0001100100,Serial Number:,100
+31-40,0101100100,Country code:,356 Panama
+41,0,Status of homing device:,"Beacon is not equipped with any homing signals or they have been deliberately disabled.  If beacon has been activated, no homing device is functional or it has been deliberately disabled"
 42,0,Self-test function:,Self-test transmission
 43,0,User cancellation:,Normal beacon operation (transmitting a distress or self-test message)
-44-66,00110000110010110000110,Latitude:,48.79315 N
-67-90,001000101000000100011111,Longitude:,69.00876 E
+44-66,00000000000000000000000,Latitude:,0.0 N
+67-90,100010110000000000000000,Longitude:,22.0 W
 91-93,000,Vessel ID:,No aircraft or maritime identity
 94-137,00000000000000000000000000000000000000000000,Spare:,All 0 - OK
 138-154,11111111111111111,Spare:,OK
 155-158 (Rotating field 1-4),0000,Rotating Field Type:,(#0) C/S G.008 Objective Requirements
-159-164 (Rotating field 5-10),000001,Elapsed time since activation:,1 hours
-165-175 (Rotating field 11-21),00000000110,Time from last encoded location:,6 minutes
-176-185 (Rotating field 22-31),0000110100,Altitude of encoded location: ,432 m
-186-189 (Rotating field 32-34),0000,HDOP:,DOP <=1
-190-193 (Rotating field 35-39),0001,VDOP:,DOP >1 and <=2
+159-164 (Rotating field 5-10),000000,Elapsed time since activation:,0 hours
+165-175 (Rotating field 11-21),00000000000,Time from last encoded location:,0 minutes
+176-185 (Rotating field 22-31),0000011001,Altitude of encoded location: ,0 m
+186-189 (Rotating field 32-34),1111,HDOP:,DOP not available
+190-193 (Rotating field 35-39),1111,VDOP:,DOP not available
 194-194 (Rotating field 40-41),00,Automated/manual activation notification,Manual activation by user
-196-198 (Rotating field 42-44),101,Remaining battery capacity,>75% and <=100% remaining
-199-200 (Rotating field 45-46),10,GNSS status,3D location
+196-198 (Rotating field 42-44),111,Remaining battery capacity,battery capacity not available
+199-200 (Rotating field 45-46),00,GNSS status,No fix
 201-202 (Rotating field 47-48),00,Spare,OK
-,,Beacon 23 Hex ID:,99340039A3D000000000001
+,,Beacon 23 Hex ID:,AC940019064000000000001
 203-204,00,To make length 204,
-205-252,101010110000011010101010101010010101111010111001,BCH,
-,,Beacon message:,000E68F4C986196188A047C000000000007FFFC0100C1A00960AB06AAA95EB9
+205-252,101010010010000100011100100011111000011100001100,BCH,
+,,Beacon message:,000641916400000022C0000000000000007FFFC000000CFF9C0A9211C8F870C

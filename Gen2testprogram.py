@@ -284,7 +284,7 @@ while next_step == False:
         else:
             break
 
-printtxt('Vessel ID: {} {} - binary {}\n'.format(vesselID, vesselID_list[vesselID],bits_vesselID))
+printtxt('\nVessel ID: {} {} \nbinary - {}\n'.format(vesselID, vesselID_list[vesselID],bits_vesselID))
 
 ##############################################
 # Vessel 0: No aircraft or maritime identity #
@@ -302,7 +302,7 @@ elif vesselID == 1:
     print '\nVessel 1: Maritime MMSI'
 
     while next_step == False:
-        userInput = raw_input('\nPlease enter the 6 digit unique vessel number. If there is no MMSI available, enter 111111: ')
+        userInput = raw_input('\nPlease enter the 6 digit unique vessel number. If there is no MMSI available, enter 111111: ') or '111111'
         try:
             ship_ID = int(userInput)
         except ValueError:
@@ -421,7 +421,7 @@ elif vesselID == 5:
         else:
             operator_bits = Func2.str2baudot(operator).zfill(18)
             break
-    print 'You entered: ' + Func2.baudot2str(operator_bits, 3)
+    printtxt('Operator Designator: {}\nbinary - {}\n'.format(Func2.baudot2str(operator_bits, 3),operator_bits))
 
     while next_step is False:
         userInput = raw_input('\nPlease enter the serial number (1 to 4095) as designated by the aircraft operator: ')
@@ -436,7 +436,7 @@ elif vesselID == 5:
             else:
                 bits_aircraft_serialnum = Func1.dec2bin(aircraft_serialnum).zfill(12)
                 break
-    print 'You entered: ' + str(Func1.bin2dec(bits_aircraft_serialnum))
+    printtxt('Serial {}\nbinary - {}'.format(str(aircraft_serialnum),bits_aircraft_serialnum))
 
     vessel_bits = bits_vesselID + operator_bits + bits_aircraft_serialnum + ('1' * 14)
 
@@ -463,14 +463,27 @@ bits_spare = '1' * 17
 #48 BIT ROTATING FIELD
 while next_step is False:
     print '\nPlease enter a rotating ID: '
-    print '0: C/S G.008 Objective Requirements'
-    print '1: Inflight Emergency'
-    print '2: RLS'
-    print '3: National Use'
-    print '4-14: Spare'
-    print '15: Cancellation Message'
+    rotatingfield_list = ['0: C/S G.008 Objective Requirements',
+                          '1: Inflight Emergency',
+                          '2: RLS',
+                          '3: National Use',
+                          '4: Spare',
+                          '5: Spare',
+                          '6: Spare',
+                          '7: Spare',
+                          '8: Spare',
+                          '9: Spare',
+                          '10: Spare',
+                          '11: Spare',
+                          '12: Spare',
+                          '13: Spare',
+                          '14: Spare',
+                          '15: Cancellation Message']
+    for i in rotatingfield_list:
+        print i
+
     try:
-        userInput = raw_input(':')
+        userInput = raw_input(':') or '0'
     except EOFError:
         userInput = 0
     try:
@@ -485,7 +498,7 @@ while next_step is False:
             bits_rotatingID = Func1.dec2bin(rotatingID).zfill(4)
             break
 
-
+printtxt('\n\nRotating field: {} \nbinary - {}'.format(rotatingfield_list[rotatingID],bits_rotatingID))
 ##############################################################
 # Rotating Field Type: C/S G.008 Objective Requirements (#0) #
 ##############################################################
@@ -496,7 +509,7 @@ if rotatingID == 0:
     ##BIT 5-10 (159-164) Elapsed time since activation (0 to 63 hours in 1 hour steps)
     while next_step is False:
         try:
-            userInput = raw_input('\nPlease enter elapsed time since activation (0 to 63 hours): ')
+            userInput = raw_input('\nPlease enter elapsed time since activation (0 to 63 hours): ') or '0'
         except EOFError:
             userInput = 0
         try:
@@ -517,7 +530,7 @@ if rotatingID == 0:
     ##BIT 11-21 (165-175) Time from last encoded location (0 to 2047 minutes in 1 minute steps)
     while next_step is False:
         try:
-            userInput = raw_input('\nPlease enter time from last encoded location (0 to 2047 minutes): ')
+            userInput = raw_input('\nPlease enter time from last encoded location (0 to 2047 minutes): ') or '0'
         except EOFError:
             userInput = 0
         try:
@@ -535,12 +548,14 @@ if rotatingID == 0:
 
     bits_rotating0 += bits_last_encoded_loc
 
+    printtxt('\n\nTime elapsed since activation - (hours:minutes) - {}:{}\n'.format(elapsed_time,last_encoded_loc))
+    printtxt('binary (bits 159-175): - {}{}'.format(str(bits_elapsed_time),str(bits_last_encoded_loc)))
 
     ##BIT 22-31 (176-185) Altitude of encoded location
     while next_step is False:
 
         try:
-            userInput = raw_input('\nPlease enter altitude in metres (-400 to 15,952): ')
+            userInput = raw_input('\nPlease enter altitude in metres (-400 to 15,952): ') or '0'
         except EOFError:
             userInput = 0
         try:
@@ -557,15 +572,15 @@ if rotatingID == 0:
                 print 'Error: invalid input'
             else:
                 break
-    print 'You entered: ' + str(Func2.getaltitude(bits_altitude))
-
+    printtxt ('\n\nAltitute entered: {}'.format(str(altitude)))
+    printtxt('\nAltitude rounded (meters):{}\nbinary (bits 176-185) - {}\n'.format(str(Func2.getaltitude(bits_altitude)),bits_altitude))
     bits_rotating0 += bits_altitude
 
 
     ##BIT 32-39 (186-193) Dilution of precision
     while next_step is False:
         try:
-            userInput = raw_input('\nPlease enter Horizontal Dilution of Precision. If HDOP not available, enter 1111: ')
+            userInput = raw_input('\nPlease enter Horizontal Dilution of Precision. If HDOP not available, enter 1111: ') or '1111'
         except EOFError:
             userInput = 0
         try:
@@ -607,13 +622,13 @@ if rotatingID == 0:
             else:
                 bits_hdop = '1110'
             break
-    print 'You entered: V{}\nbinary: {}'.format(Func2.getDOP(bits_hdop), bits_hdop)
+    printtxt('\nV{}\nbinary: {}'.format(Func2.getDOP(bits_hdop), bits_hdop))
 
     bits_rotating0 += bits_hdop
 
     while next_step is False:
         try:
-            userInput = raw_input('\nPlease enter Vertical Dilution of Precision. If VDOP not available, enter 1111: ')
+            userInput = raw_input('\nPlease enter Vertical Dilution of Precision. If VDOP not available, enter 1111: ') or '1111'
         except EOFError:
             userInput = 0
         try:
@@ -655,7 +670,7 @@ if rotatingID == 0:
             else:
                 bits_vdop = '1110'
             break
-    print 'You entered: V{}\nbinary: {}'.format(Func2.getDOP(bits_vdop),bits_vdop)
+    printtxt('V{}\nbinary: {}'.format(Func2.getDOP(bits_vdop),bits_vdop))
 
     bits_rotating0 += bits_vdop
 
@@ -664,25 +679,33 @@ if rotatingID == 0:
 
     while next_step is False:
 
-        print '\nPlease select activation method:\n00: Manual activation by user\n01: Automatic activation by the beacon\n10: Automatic activation by external means\n11: Spare'
+        print '\nPlease select activation method:\n'
+        activation_method_list=['0: Manual activation by user',
+                                '1: Automatic activation by the beacon',
+                                '2: Automatic activation by external means',
+                                '3: Spare']
 
+        for i in activation_method_list:
+            print i
         try:
-            bits_activation = raw_input()
+            selection = raw_input() or '0'
         except EOFError:
-            bits_activation = '22'
-        if bits_activation not in ['00','01','10','11']:
+            bits_activation = '0'
+        try:
+            bits_activation = Func1.dec2bin(int(selection)).zfill(2)
+        except ValueError:
             print "Invalid Entry"
-            pass
         else:
             break
-    print 'You entered: ' + bits_activation
+    printtxt('\n{}   {}   \nbinary - {}\n'.format(str(selection),activation_method_list[int(selection)],bits_activation))
 
     bits_rotating0 += bits_activation
 
     ##BIT 42-44 (196-198) Remaining battery capacity
     while next_step is False:
+
         try:
-            userInput = raw_input('\nPlease enter remaining batter capacity (%). If unavailable, enter 111: ')
+            userInput = raw_input('\nPlease enter remaining batter capacity (%). If unavailable, enter 111: ') or '111'
         except EOFError:
             userInput = ''
         try:
@@ -690,6 +713,7 @@ if rotatingID == 0:
         except ValueError:
             print 'Error: value must be an integer'
             battery = 111
+
         else:
             if battery <= 5:
                 bits_battery = '000'
@@ -706,26 +730,31 @@ if rotatingID == 0:
             else:
                 bits_battery = '111'
             break
-    print 'You entered: ' + definitions.battery[bits_battery]
+    printtxt('\nBattery Capacity: {} \nbinary - {}\n'.format(definitions.battery[bits_battery],bits_battery))
 
     bits_rotating0 += bits_battery
 
     ##BIT 45-46 (199-200) GNSS status
     while next_step is False:
         print '\nPlease select GNSS status:'
-        for x in definitions.gnss_status:
-            print (x) + ': ' + definitions.gnss_status[x]
+        gnss_status_list = ['0: No fix',
+                            '1: 2D location only',
+                            '2: 3D location',
+                            '3: Reserved for future use']
+
+        for x in gnss_status_list:
+            print x
         try:
-            bits_gnss = raw_input()
+            gnss = raw_input() or '0'
         except EOFError:
-            bits_gnss = ''
+            bits_gnss = '00'
         try:
-            definitions.gnss_status[bits_gnss]
-        except KeyError:
+            bits_gnss=Func1.dec2bin(int(selection)).zfill(2)
+        except ValueError:
             print 'Error: invalid input'
         else:
             break
-    print 'You entered: ' + definitions.gnss_status[bits_gnss]
+    printtxt('GNSS status: {} \nbinary {}'.format(gnss_status_list[int(selection)],bits_gnss))
 
     bits_rotating0 += bits_gnss
 
@@ -922,7 +951,7 @@ else:
 
     rotatingfield = bits_rotating4
 
-printtxt('\nSpare bits: {}\n'.format(bits_spare))
+printtxt('\nSpare bits (138-154): {}\n'.format(bits_spare))
 ####################################################################################################################################################################################
 bits_maininfo = \
     bits_tac + \

@@ -86,7 +86,7 @@ while next_step == False:
     print '\nHoming Status\n0: Beacon is not equipped with any homing signals or deliberately disabled or if activated, homing device is nonfunctional'
     print '1: Beacon is equipped with at least one homing signal. If beacon has been activated, homing device is functional and transmitting'
     try:
-        userInput = raw_input('\nEnter homing status: ')
+        userInput = raw_input('\nEnter homing status: ') or '0'
     except EOFError:
         userInput=0
     try:
@@ -102,7 +102,7 @@ while next_step == False:
             print 'Error: invalid input'
         else:
             break
-printtxt('Homing status: {} binary - {}\n'.format(Func2.homing(bits_status),bits_status))
+printtxt('Homing status: {} \nbinary - {}\n'.format(Func2.homing(bits_status),bits_status))
 
 
 ##BIT 42 Self-test function
@@ -111,11 +111,11 @@ while next_step == False:
     print '0: Self-test transmission'
     print '1: Normal beacon operation (transmitting a distress)'
     try:
-        userInput = raw_input('Please enter self-test status:')
+        userInput = raw_input('Enter self-test status:') or '0'
     except EOFError:
         userInput=0
     try:
-        selftest = int(userInput)
+        selftest = int(userInput) or '0'
     except ValueError:
         print 'Error: value must be an integer'
         selftest = 0
@@ -127,7 +127,7 @@ while next_step == False:
             print 'Error: invalid input'
         else:
             break
-printtxt('Self test status: {} binary - {}\n\n'.format(Func2.selfTest(bits_selftest),bits_selftest))
+printtxt('Self test status: {} \nbinary - {}\n\n'.format(Func2.selfTest(bits_selftest),bits_selftest))
 
 
 ##BIT 43 User cancellation
@@ -138,7 +138,7 @@ while next_step == False:
     for i in usercancel_list:
         print i
     try:
-        userInput = raw_input('\nPlease enter message status:')
+        userInput = raw_input('\nPlease enter message status:') or '0'
     except EOFError:
         userInput=0
     try:
@@ -163,14 +163,14 @@ while next_step == False:
     print '0: North'
     print '1: South'
     try:
-        userInput = raw_input()
+        userInput = raw_input() or '0'
     except EOFError:
         userInput=0
     try:
         nsflag = int(userInput)
     except ValueError:
         print 'Error: value must be an integer'
-        neflag = 0
+        nsflag = 0
     else:
         bits_latitude = str(nsflag)
         if len(bits_latitude) != 1:
@@ -182,13 +182,13 @@ while next_step == False:
 
 while next_step == False:
     try:
-        userInput = raw_input('\nPlease enter latitude in degrees: ')
+        userInput = raw_input('\nPlease enter latitude in degrees: ') or '127.0302734375'
     except EOFError:
         userInput = 0
     try:
         lat_degrees = float(userInput)
     except ValueError:
-        print 'Error: value must be an integer'
+        print 'Error: value must be a decimal'
         lat_degrees = 0
     else:
         bits_lat_degrees = Func2.encodeLatitude(lat_degrees)
@@ -200,7 +200,7 @@ while next_step == False:
             bits_latitude = bits_latitude + bits_lat_degrees
             break
 
-printtxt('Latitude: {} - binary {}\n'.format(Func2.getlatitude(bits_latitude)[0],bits_latitude))
+printtxt('\n\nLatitude: {} \nbinary - {}\n'.format(Func2.getlatitude(bits_latitude)[0],bits_latitude))
 
 
 ##BIT 67-90 Longitude
@@ -209,7 +209,7 @@ while next_step == False:
     print '0: East'
     print '1: West'
     try:
-        userInput = raw_input()
+        userInput = raw_input() or '0'
     except EOFError:
         userInput=0
     try:
@@ -228,7 +228,7 @@ while next_step == False:
 
 while next_step == False:
     try:
-        userInput = raw_input('\nPlease enter longitude in degrees: ')
+        userInput = raw_input('\nPlease enter longitude in degrees: ') or '255.969696044922'
     except EOFError:
         userInput=0
     try:
@@ -245,7 +245,7 @@ while next_step == False:
         else:
             bits_longitude = bits_longitude + bits_lon_degrees
             break
-printtxt('Longitude: {} - binary {}\n'.format(Func2.getlongitude(bits_longitude)[0],bits_longitude))
+printtxt('Longitude: {} \nbinary {}\n'.format(Func2.getlongitude(bits_longitude)[0],bits_longitude))
 
 
 
@@ -267,7 +267,7 @@ while next_step == False:
     for i in vesselID_list:
         print i
     try:
-        userInput = raw_input('\nPlease enter a vessel ID:')
+        userInput = raw_input('\nPlease enter a vessel ID:') or '0'
     except EOFError:
         userInput=0
     try:
@@ -325,7 +325,7 @@ elif vesselID == 1:
                     break
 
     while next_step is False:
-        userInput = raw_input('\nEnter only the last 4 digit of the EPIRB-AIS system. If no EPIRB-AIS system, enter 10922: ')
+        userInput = raw_input('\nEnter only the last 4 digit of the EPIRB-AIS system. If no EPIRB-AIS system, enter 10922: ') or '10922'
         try:
             mmsi_ais = int(userInput)
         except ValueError:
@@ -350,9 +350,9 @@ elif vesselID == 2:
     print '\nVessel 2: Radio Call Sign'
 
     while next_step is False:
-        callsign = raw_input('\nPlease enter the 7 character radio call sign: ')
+        callsign = raw_input('\nPlease enter the 7 character radio call sign: ') or '       '
         if len(callsign) != 7:
-            print 'Error: call sign must be 7 characters (enter 7 [spaces] for blank)'
+            print 'Error: call sign must be 7 characters or blank'
         else:
             break
     callsign_bits = Func2.str2baudot(callsign).zfill(42)
@@ -368,7 +368,7 @@ elif vesselID == 3:
     print '\nVessel 3: Aricraft Registration Marking (Tail Number)'
 
     while next_step is False:
-        tailnum = raw_input('\nPlease enter the 7 character tail number: ')
+        tailnum = raw_input('\nPlease enter the 7 character tail number: ') or '       '
         if len(tailnum) != 7:
             print 'Error: tail number must be 7 characters'
         else:
@@ -387,7 +387,7 @@ elif vesselID == 4:
     print '\nVessel 4: Aircraft Aviation 24 Bit Addres'
 
     while next_step is False:  
-        userInput = raw_input('\nPlease enter the 24 bit aviation address in integer format: ')
+        userInput = raw_input('\nPlease enter the 24 bit aviation address in integer format: ') or '0'
         try:
             aviation_address = int(userInput)
         except ValueError:
@@ -415,7 +415,7 @@ elif vesselID == 5:
     print '\nVessel 5: Aircraft Operator and Serial Number'
 
     while next_step is False: 
-        operator = raw_input('\nPlease enter 3-letter aircraft operator designator: ')
+        operator = raw_input('\nPlease enter 3-letter aircraft operator designator: ') or '   '
         if len(operator) != 3:
             print 'Error: aircraft operator designator must be 3 characters'
         else:
@@ -424,7 +424,7 @@ elif vesselID == 5:
     printtxt('Operator Designator: {}\nbinary - {}\n'.format(Func2.baudot2str(operator_bits, 3),operator_bits))
 
     while next_step is False:
-        userInput = raw_input('\nPlease enter the serial number (1 to 4095) as designated by the aircraft operator: ')
+        userInput = raw_input('\nPlease enter the serial number (1 to 4095) as designated by the aircraft operator: ') or '1'
         try:
             aircraft_serialnum = int(userInput)
         except ValueError:
@@ -584,46 +584,17 @@ if rotatingID == 0:
         except EOFError:
             userInput = 0
         try:
-            hdop = int(userInput)
+            hdop = float(userInput)
         except ValueError:
-            print 'Error: value must be an integer'
+            print 'Error: value must be an float'
             hdop = 1111
         else:
             if hdop == 1111:
                 bits_hdop = '1111'
-            elif hdop <= 1:
-                bits_hdop = '0000'
-            elif hdop > 1 and hdop <= 2:
-                bits_hdop = '0001'
-            elif hdop > 2 and hdop <= 3:
-                bits_hdop = '0010'
-            elif hdop > 3 and hdop <= 4:
-                bits_hdop = '0011'
-            elif hdop > 4 and hdop <= 5:
-                bits_hdop = '0100'
-            elif hdop > 5 and hdop <= 6:
-                bits_hdop = '0101'
-            elif hdop > 6 and hdop <= 7:
-                bits_hdop = '0110'
-            elif hdop > 7 and hdop <= 8:
-                bits_hdop = '0111'
-            elif hdop > 8 and hdop <= 10:
-                bits_hdop = '1000'
-            elif hdop > 10 and hdop <= 12:
-                bits_hdop = '1001'
-            elif hdop > 12 and hdop <= 15:
-                bits_hdop = '1010'
-            elif hdop > 15 and hdop <= 20:
-                bits_hdop = '1011'
-            elif hdop > 20 and hdop <= 30:
-                bits_hdop = '1100'
-            elif hdop > 30 and hdop <= 50:
-                bits_hdop = '1101'
             else:
-                bits_hdop = '1110'
+                bits_hdop = Func2.getDopRange(hdop)
             break
-    printtxt('\nV{}\nbinary: {}'.format(Func2.getDOP(bits_hdop), bits_hdop))
-
+    printtxt('\nH{}\nbinary: {}\n'.format(Func2.getDOP(bits_hdop), bits_hdop))
     bits_rotating0 += bits_hdop
 
     while next_step is False:
@@ -632,46 +603,17 @@ if rotatingID == 0:
         except EOFError:
             userInput = 0
         try:
-            vdop = int(userInput)
+            vdop = float(userInput)
         except ValueError:
-            print 'Error: value must be an integer'
+            print 'Error: value must be a float'
             vdop = 1111
         else:
             if vdop == 1111:
                 bits_vdop = '1111'
-            elif vdop <= 1:
-                bits_vdop = '0000'
-            elif vdop > 1 and vdop <= 2:
-                bits_vdop = '0001'
-            elif vdop > 2 and vdop <= 3:
-                bits_vdop = '0010'
-            elif vdop > 3 and vdop <= 4:
-                bits_vdop = '0011'
-            elif vdop > 4 and vdop <= 5:
-                bits_vdop = '0100'
-            elif vdop > 5 and vdop <= 6:
-                bits_vdop = '0101'
-            elif vdop > 6 and vdop <= 7:
-                bits_vdop = '0110'
-            elif vdop > 7 and vdop <= 8:
-                bits_vdop = '0111'
-            elif vdop > 8 and vdop <= 10:
-                bits_vdop = '1000'
-            elif vdop > 10 and vdop <= 12:
-                bits_vdop = '1001'
-            elif vdop > 12 and vdop <= 15:
-                bits_vdop = '1010'
-            elif vdop > 15 and vdop <= 20:
-                bits_vdop = '1011'
-            elif vdop > 20 and vdop <= 30:
-                bits_vdop = '1100'
-            elif vdop > 30 and vdop <= 50:
-                bits_vdop = '1101'
             else:
-                bits_vdop = '1110'
+                bits_vdop = Func2.getDopRange(vdop)
             break
-    printtxt('V{}\nbinary: {}'.format(Func2.getDOP(bits_vdop),bits_vdop))
-
+    printtxt('\nV{}\nbinary: {}\n'.format(Func2.getDOP(bits_vdop),bits_vdop))
     bits_rotating0 += bits_vdop
 
 
@@ -773,7 +715,7 @@ elif rotatingID == 1:
 
     ##BIT 5-21 (159-175) Time of last encoded location
     while next_step is False:
-        encoded_loc_time = raw_input('Please enter time of last encoded location in the following format hh:mm:ss : ')
+        encoded_loc_time = raw_input('Please enter time of last encoded location in the following format hh:mm:ss : ') or '00:00:00'
         try:
             encoded_loc_sec = int(encoded_loc_time[0:2]) * 3600 + int(encoded_loc_time[3:5]) * 60 + int(encoded_loc_time[6:])
         except ValueError:
@@ -781,28 +723,34 @@ elif rotatingID == 1:
         else:
             bits_encoded_loc_time = Func1.dec2bin(encoded_loc_sec).zfill(17)
             break
-    print 'You entered: ' + Func2.sec2utc(bits_encoded_loc_time)
+    printtxt('\nTime: {}  \nbinary - {} '.format(Func2.sec2utc(bits_encoded_loc_time),bits_encoded_loc_time))
 
     bits_rotating1 += bits_encoded_loc_time
 
 
     ##BIT 22-31 (176-185) Altitude of encoded location
     while next_step is False:
-        userInput = raw_input('\nPlease enter altitude in metres: ')
+        userInput = raw_input('\nPlease enter altitude in metres: ') or '0'
         try:
             altitude = int(userInput)
         except ValueError:
             print 'Error: value must be an integer'
             altitude = 0
         else:
+
+
             bits_altitude = Func1.dec2bin(int(round(float(altitude + 400) / 16))).zfill(10)
             if len(bits_altitude) != 10:
-                print 'Error: input too long.'
+                print 'Error: Input too long. Must be an integer between -400 and 15,952'
             elif not Func2.isBinary(bits_altitude):
                 print 'Error: invalid input'
             else:
                 break
-    print 'You entered: ' + str(Func2.getaltitude(bits_altitude))
+    printtxt('\n\nAltitute entered: {}'.format(str(altitude)))
+    printtxt('\nAltitude rounded (meters):{}\nbinary - {}\n'.format(str(Func2.getaltitude(bits_altitude)),bits_altitude))
+
+
+
 
     bits_rotating1 += bits_altitude
 
@@ -819,7 +767,7 @@ elif rotatingID == 1:
             print 'Error: invalid input'
         else:
             break
-    print 'You entered: ' + definitions.triggering_event[bits_trigger]
+    printtxt('\nTriggering event:{} \nbinary {}'.format(definitions.triggering_event[bits_trigger],bits_trigger))
 
     bits_rotating1 += bits_trigger
 

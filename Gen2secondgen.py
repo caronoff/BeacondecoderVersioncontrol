@@ -25,11 +25,12 @@ class SecondGen(Gen2Error):
         ##All second generation beacon messages must be EXACTLY 250 bits
         ##in length for the program to function properly.
         self.bits = Func.hex2bin(strhex)
+        self.tablebin = []
+        self.rotatingbin = []
 
 
         if len(self.bits) == 252 or len(self.bits) == 202 or len(self.bits) == 204 or len(self.bits) == 250 :
-            self.tablebin = []
-            self.rotatingbin = []
+
 
             ##Add an additional bit to ensure that bits in array line up with bits in documentation
             self.bits = "0" + self.bits
@@ -168,9 +169,9 @@ class SecondGen(Gen2Error):
                 else:
                     self.epirb_ais_str = str(self.epirb_ais).zfill(4)
 
-                    self.epirb_ais_str = '974' + self.mmsi_string[3:5] + self.epirb_ais_str
+                    self.epirb_ais_str = '974xx' + self.epirb_ais_str
                     self.tablebin.append(['124-137',
-                                          self.bits[123:137],
+                                          self.bits[124:138],
                                           'EPIRB-AIS System Identity:',
                                           self.epirb_ais_str])
 
@@ -454,18 +455,83 @@ class SecondGen(Gen2Error):
             ####################################
             # 48-BIT BCH ERROR CORRECTING CODE #
             ####################################
-            if len(self.bits) == 251:
+            if len(self.bits) == 253:
+                self.tablebin.append(['203-204 (padding)',
+                                      self.bits[203:205],
+                                      '',
+                                      ''])
+                self.tablebin.append(['205: (bch)',
+                                      self.bits[205:],
+                                      'Encoded BCH',
+                                      'Encoded BCH'])
                 ##Calculate the BCH
                 self.calculatedBCH = Func.calcBCH(self.bits[1:], 0, 202, 250)
 
+                self.tablebin.append(['Calculated',
+                                      self.calculatedBCH,
+                                      'Computed',
+                                      ''])
+
                 ##Compare to the BCH in the beacon message
-                self.BCHerrors = Func.errors(self.calculatedBCH, self.bits[203:])
+                self.BCHerrors = Func.errors(self.calculatedBCH, self.bits[205:])
 
                 ##Write the number of errors to our table
                 self.tablebin.append(['',
                                       '',
                                       'Number of BCH errors:',
                                       str(self.BCHerrors)])
+        elif len(self.bits) == 92:
+            self.type = ('Hex string length of {}. \nBit length of {}. \nThis is a second generation beacon UIN'.format(str(len(strhex)),str(len(self.bits))))
+            ##Add an additional bit to ensure that bits in array line up with bits in documentation
+            self.bits = "0" + self.bits
+            self.tablebin.append(['Unique ID','Second Generation','',''])
+            self.tablebin.append(['1: (fixed)',
+                                  self.bits[1],
+                                  'should be 1',
+                                  ['Error! Should be 1', 'OK'][int(self.bits[1])]])
+            ##BIT 2-11 Country code
+            self.countryCode = Func.bin2dec(self.bits[2:12])
+            self.countryName = Func.countryname(self.countryCode)
+            self.tablebin.append(['2-11',
+                                  self.bits[2:12],
+                                  'Country code:',
+                                  str(self.countryCode) + ' ' + str(self.countryName)])
+            ##BIT 12-14 Should be 101
+            if self.bits[12:15] == '101':
+                status_check = 'OK'
+            else:
+                status_check = 'Error! Should be 101'
+            self.tablebin.append(['12-14',
+                                  self.bits[12:15],
+                                  'Should be 101',
+                                  status_check])
+            ##BIT 15-34  Type Approval Certificate #
+            self.tac = Func.bin2dec(self.bits[15:35])
+            self.tablebin.append(['15-34',
+                                  self.bits[15:35],
+                                  'Type Approval Certificate #',
+                                  str(self.tac)])
+            ##BIT 35-44 Beacon Serial Number
+            self.serialNum = Func.bin2dec(self.bits[34:45])
+            self.tablebin.append(['34-44',
+                                  self.bits[34:45],
+                                  'Serial Number',
+                                  str(self.serialNum)])
+
+            ##BIT 45-47 Aircraft / Vessel ID Type
+            self.tablebin.append(['45-47',
+                                  self.bits[45:48],
+                                  'Vessel ID Type',
+                                  Func.getVesselid(self.bits[45:48])])
+
+
+            ##BIT 48-91 Aircraft / Vessel ID
+
+            ##BIT 92 Fixed value 1
+            self.tablebin.append(['92',
+                                  self.bits[92],
+                                  'Fixed 1',
+                                  self.bits[92]=='1'])
 
         else:
             self.type = ('Hex string length of ' + str(len(strhex)) + '.'

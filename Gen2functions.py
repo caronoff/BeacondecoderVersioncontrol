@@ -1,4 +1,5 @@
 """Functions specific to Second Generation Beacons"""
+import bisect
 
 import definitions
 import decodefunctions
@@ -17,7 +18,8 @@ def bin2dec(binary_str):
 
     return dec_int
 
-
+def getVesselid(b):
+    return definitions.vessel_id[b]
 
 def hex2binbak(my_hex):
     """Second generation beacons transmit a burst of 300 binary bits.
@@ -436,7 +438,23 @@ def getDOP(dop_bits):
         mydop = 'Unknown DOP'
     return mydop
 
-
+def getDopRange(v):
+    ranges = [(1, '0000'),
+              (2, '0001'),
+              (3, '0010'),
+              (4, '0011'),
+              (5, '0100'),
+              (6, '0101'),
+              (7, '0110'),
+              (8, '0111'),
+              (10, '1000'),
+              (12, '1001'),
+              (15, '1010'),
+              (20, '1011'),
+              (30, '1100'),
+              (50, '1101'),
+              (1000000, '1110')]
+    return ranges[bisect.bisect_right(ranges, (v,))][1]
 
 def getCallsign(callsign_bits):
     """Input binary bits, convert to string using modified Baudot

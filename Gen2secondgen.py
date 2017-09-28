@@ -99,215 +99,12 @@ class SecondGen(Gen2Error):
             #  BIT 91-137 VESSEL ID FIELD  #
             #                              #
             ################################
-            self.vesselIDfill('long',self.bits[91:138])
-            self.vesselID = self.bits[91:94]
-
-
-            ##############################################
-            # Vessel 0: No aircraft or maritime identity #
-            ##############################################
-
-            if self.vesselID == '000':
-                self.tablebin.append(['91-93',
-                                      self.bits[91:94],
-                                      'Vessel ID:',
-                                      'No aircraft or maritime identity'])
-
-                if Func.checkzeros(self.bits[94:138]):
-                    self.tablebin.append(['94-137',
-                                          self.bits[94:138],
-                                          'Spare:',
-                                          'All 0 - OK'])
-                else:
-                    self.tablebin.append(['94-137',
-                                          self.bits[94:138],
-                                          'Spare:',
-                                          'ERROR: Bits 94-137 should be 0'])
-
-
-            ###########################
-            # Vessel 1: Maritime MMSI #
-            ###########################
-
-            elif self.vesselID == '001':
-                self.tablebin.append(['91-93',
-                                      self.bits[91:94],
-                                      'Vessel ID:',
-                                      'MMSI'])
-
-                self.mmsi = Func.bin2dec(self.bits[94:124])
-
-                if self.mmsi == 111111:
-                    self.tablebin.append(['94-123',
-                                          self.bits[94:124],
-                                          'MMSI:',
-                                          'No MMSI available'])
-                else:
-                    self.mmsi_string = str(self.mmsi).zfill(9)
-
-                    self.tablebin.append(['94-123',
-                                          self.bits[94:124],
-                                          'Unique ship station identity M1I2D3X4X5X6X7X8X9:',
-                                          self.mmsi_string])
-                    self.mmsi_country = Func.countryname(int(self.mmsi_string[0:3]))
-                    self.tablebin.append(['',
-                                          '',
-                                          'Flag state of vessel:',
-                                          self.mmsi_string[0:3] + ' ' + self.mmsi_country])
-                    self.tablebin.append(['',
-                                          '',
-                                          'Unique vessel number:',
-                                          self.mmsi_string[3:]])
-
-                self.epirb_ais = Func.bin2dec(self.bits[124:138])
-
-                if self.epirb_ais == 10922:
-                    self.tablebin.append(['124-137',
-                                          self.bits[124:138],
-                                          'EPIRB-AIS System Identity:',
-                                          'No EPIRB-AIS System'])
-                else:
-                    self.epirb_ais_str = str(self.epirb_ais).zfill(4)
-
-                    self.epirb_ais_str = '974xx' + self.epirb_ais_str
-                    self.tablebin.append(['124-137',
-                                          self.bits[124:138],
-                                          'EPIRB-AIS System Identity:',
-                                          self.epirb_ais_str])
-
-
-            #############################
-            # Vessel 2: Radio Call Sign #
-            #############################
-
-            elif self.vesselID == '010':
-                self.tablebin.append(['91-93',
-                                      self.bits[91:94],
-                                      'Vessel ID:',
-                                      'Radio Call Sign'])
-
-                self.callsign = Func.getCallsign(self.bits[94:136])
-
-                self.tablebin.append(['94-135',
-                                      self.bits[94:136],
-                                      'Radio Callsign:',
-                                      self.callsign])
-
-                if Func.checkzeros(self.bits[136:138]):
-                    self.tablebin.append(['136-137',
-                                          self.bits[136:138],
-                                          'Spare:',
-                                          'All 0 - OK'])
-                else:
-                    self.tablebin.append(['136-137',
-                                          self.bits[136:138],
-                                          'Spare:',
-                                          'ERROR: Bits 136-137 should be all 0s'])
-
-
-            #########################################################
-            # Vessel 3: Aricraft Registration Marking (Tail Number) #
-            #########################################################
-
-            elif self.vesselID == '011':
-                self.tablebin.append(['91-93',
-                                      self.bits[91:94],
-                                      'Vessel ID:',
-                                      'Aircraft Registration Marking (Tail Number)'])
-
-                self.tailnum = Func.getTailNum(self.bits[94:136])
-
-                self.tablebin.append(['94-135',
-                                      self.bits[94:136],
-                                      'Aircraft Registration Marking:',
-                                      self.tailnum])
-
-                if Func.checkzeros(self.bits[136:138]):
-                    self.tablebin.append(['136-137',
-                                          self.bits[136:138],
-                                          'Spare:',
-                                          'OK'])
-                else:
-                    self.tablebin.append(['136-137',
-                                          self.bits[136:138],
-                                          'Spare:',
-                                          'ERROR: Bits 136-137 should be all 0s'])
-
-
-            ##############################################
-            # Vessel 4: Aircraft Aviation 24 Bit Address #
-            ##############################################
-
-            elif self.vesselID == '100':
-                self.tablebin.append(['91-93',
-                                      self.bits[91:94],
-                                      'Vessel ID:',
-                                      'Aircraft Aviation 24 Bit Address'])
-
-                self.aviationBitAddress = Func.bin2dec(self.bits[94:118])
-                self.tablebin.append(['94-117',
-                                      self.bits[94:118],
-                                      'Aviation 24 bit address:',
-                                      str(self.aviationBitAddress)])
-
-                if Func.checkzeros(self.bits[118:138]):
-                    self.tablebin.append(['118-137',
-                                          self.bits[118:138],
-                                          'Spare:',
-                                          'OK'])
-                else:
-                    self.tablebin.append(['118-137',
-                                          self.bits[118:138],
-                                          'Spare:',
-                                          'ERROR: Bits 118-137 following aviation 24 bit address should be 0'])
-
-
-            #################################################
-            # Vessel 5: Aircraft Operator and Serial Number #
-            #################################################
-
-            elif self.vesselID == '101':
-                self.tablebin.append(['91-93',
-                                      self.bits[91:94],
-                                      'Vessel ID:',
-                                      'Aircraft Operator and Serial Number'])
-
-                self.operator = Func.baudot2str(self.bits[94:112], 3)
-                self.serialnum = Func.bin2dec(self.bits[112:124])
-                self.tablebin.append(['94-111',
-                                      self.bits[94:112],
-                                      'Aircraft operator:',
-                                      self.operator])
-                self.tablebin.append(['112-123',
-                                      self.bits[112:124],
-                                      'Serial number:',
-                                      str(self.serialnum)])
-
-
-                if Func.checkones(self.bits[124:138]):
-                    self.tablebin.append(['124-137',
-                                          self.bits[124:138],
-                                          'Spare:',
-                                          'OK'])
-                else:
-                    self.tablebin.append(['124-137',
-                                          self.bits[124:138],
-                                          'Spare:',
-                                          'ERROR: Bits 124-137 following aircraft operator and serial numbers should be 1'])
-
-            ##########################
-            # Other Vessel IDs Spare #
-            ##########################
-
-            else:
-                self.tablebin.append(['91-93',
-                                      self.bits[91:94],
-                                      'Vessel ID:',
-                                      'Spare'])
+            self.vesselIDfill(0,self.bits[91:138])
 
 
 
-            ##BIT 138-154 Spare bits [137-153]
+
+            ##BIT 138-154 Spare bits [137-154]
             if Func.checkones(self.bits[138:155]):
                 self.tablebin.append(['138-154',
                                       self.bits[138:155],
@@ -512,15 +309,14 @@ class SecondGen(Gen2Error):
                                   'Type Approval Certificate #',
                                   str(self.tac)])
             ##BIT 35-44 Beacon Serial Number
-            self.serialNum = Func.bin2dec(self.bits[34:45])
-            self.tablebin.append(['34-44',
-                                  self.bits[34:45],
+            self.serialNum = Func.bin2dec(self.bits[35:45])
+            self.tablebin.append(['35-44',
+                                  self.bits[35:45],
                                   'Serial Number',
                                   str(self.serialNum)])
 
             ##BIT 45-91 Aircraft / Vessel ID
-
-            self.vesselIDfill('short', self.bits[45:92])
+            self.vesselIDfill(46, self.bits[45:92])
 
 
 
@@ -540,12 +336,9 @@ class SecondGen(Gen2Error):
     def bitlabel(self,a,b,c):
         return str(int(a)-int(c))+'-'+str(int(b)-int(c))
 
-    def vesselIDfill(self,msgtype,bits):
+    def vesselIDfill(self,deduct_offset,bits):
 
-        if msgtype=='long':
-            deduct_offset=0
-        elif msgtype=='short':
-            deduct_offset=46
+
         self.vesselID = bits[0:3]
         self.tablebin.append([self.bitlabel(91,93,deduct_offset), self.vesselID , 'Vessel ID Type', Func.getVesselid(self.vesselID)])
 
@@ -691,6 +484,9 @@ class SecondGen(Gen2Error):
                                   bits[33:47],
                                   'Spare all should be 1',
                                   status_check])
+
+
+
 
     def country(self):
         return (('Country Code:', self.countryCode), ('Country Name:', self.countryName))

@@ -38,7 +38,7 @@ class MapDlg(QDialog, ui_map.Ui_Dialog):
 
 
     def get_marker_coordinates(self):
-        self.currentframe.evaluateJavaScript('Marker({0},{1})'.format(self._lat, self._long))
+        self.currentframe.evaluateJavaScript('Marker({},{})'.format(self._lat, self._long))
         self.setWindowTitle("Latitude:  {}   Longitude:  {}".format(self._lat, self._long))
 
 
@@ -104,7 +104,7 @@ class MainWindow(QMainWindow, ui_beaconhex.Ui_BeaconDecoder):
         hexcode = unicode(self.hexLineEdit.text())
         self._lasthex = hexcode
 
-        if len(hexcode) == 63 or len(hexcode) == 51 or len(hexcode) == 75:
+        if len(hexcode) == 63 or len(hexcode) == 51 or len(hexcode) == 75 or len(hexcode)==23:
             self._beacon = Gen2.SecondGen(hexcode)
         else:
             self._beacon = decodehex2.BeaconHex()

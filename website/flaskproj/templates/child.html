@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block title %}Index {{user.nickname}} {% endblock %}
+{% block head %}
+  {{ super() }}
+
+
+  <script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  </script>
+  <script type=text/javascript>
+  $(function()
+{$('#hexbutton').bind
+    ('click',function()
+        {$.getJSON
+            ($SCRIPT_ROOT+'/validatehex', {hexcode: $('input[name="hexcode"]').val()},function(data)
+                {$("#echoResult").text(data.echostatus);   if(data.echostatus=='valid'){submitcode();}else{ $("#echoResult").text(data.echostatus + ' not good');}
+                }
+            );
+              return false;
+        }
+    ); //end bind
+}
+);
+  </script>
+
+<script type=text/javascript>
+function submitcode(){
+$("#decodeHex").submit();
+}
+</script>
+
+<style type="text/css">
+    .important { color: #336699; }
+</style>
+      {% endblock %}
+
+
+
+      {% block content %}
+      <h1>Index {{user.nickname}}</h1>
+	  <p class="important">
+	      Welcome on my awesome homepage 2.
+	      <form id="decodeHex" action="/output">Enter hexidecimal code: <input type="text" name="hexcode" value=""><br><input type="submit" id="hexbutton" value="Submit"></form>
+	      <br>
+
+	      <div id='echoResult'>result</div>
+
+	     
+	     
+	      {% endblock %}
+

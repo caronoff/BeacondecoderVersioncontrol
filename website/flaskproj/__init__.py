@@ -17,9 +17,15 @@ def validatehex():
 @app.route('/output', methods=['GET','POST'])
 def output():
     ## output will only process if hexcode has been validated.
-    outputdata= str(request.args.get('hexcode'))
-    username=str(request.args.get('name'))
-    return render_template('output.html',hexcode=outputdata, username="test")
+    outputdata="dummy"
+    print(request.method)
+    if request.method== 'GET':
+        outputdata= str(request.args.get('hexcode'))
+        username = str(request.args.get('username'))
+
+
+
+    return render_template('output.html',hexcode=outputdata, username=username)
 
 @app.route("/")
 @app.route("/index")

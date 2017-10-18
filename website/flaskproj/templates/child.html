@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}Index {{user.nickname}} {% endblock %}
+
+
 {% block head %}
   {{ super() }}
 
@@ -32,20 +34,66 @@ $("#decodeHex").submit();
 <style type="text/css">
     .important { color: #336699; }
 </style>
+
+
+
+<!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/signin.css') }}" rel="stylesheet">
+
       {% endblock %}
 
 
 
       {% block content %}
-      <h1>Index {{user.nickname}}</h1>
-	  <p class="important">
-	      Welcome on my awesome homepage 2.
-	      <form id="decodeHex" action="/output">Enter hexidecimal code: <input type="text" name="hexcode" value=""><br><input type="submit" id="hexbutton" value="Submit"></form>
+
+
+
+	  <!--
+	  <h1>Index {{user.nickname}}</h1>
+      // <p class="important">
+	  //    Welcome on my awesome homepage 3.
+	  //    <form id="decodeHex" action="/output" >
+      //      Enter hexidecimal code: <input type="text" name="hexcode" value=""><input type="submit" id="hexbutton" value="Submit">
+      //      <input type="hidden" name="username" value="{{user.nickname}}">
+
+
+        //   </form>
+      -->
+<div class="container">
+     <h1>Index {{user.nickname}}</h1>
+      <form class="form-signin" id="decodeHex" action="/output" >
+        <h2 class="form-signin-heading">Cospas-Sarsat Decoder</h2>
+        <label for="inputhexcode" class="sr-only">Enter hexidecimal code</label>
+        <input type="email" name="hexcode" id="inputhexcode" class="form-control" placeholder="Enter hexidecimal code" required autofocus>
+        <input type="hidden" name="username" value="{{user.nickname}}">
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="hexbutton">Submit</button>
+      </form>
+
+</div> <!-- /container -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	      <br>
 
 	      <div id='echoResult'>result</div>
 
 	     
-	     
+
 	      {% endblock %}
 

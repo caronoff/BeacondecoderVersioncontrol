@@ -1,21 +1,55 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-	{% block head %}
-<script type=text/javascript src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-	
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <title>{% block title %}{% endblock %} - My Webpage</title>
-	    {% endblock %}
+	{% block head %}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<script type=text/javascript src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<!-- Bootstrap core CSS -->
+
+	  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+        <title>Cospas-Sarsat - {% block title %}{% endblock %}</title>
+	{% endblock %}
 	      </head>
-	        <body>
-			    <div id="content">{% block content %}{% endblock %}</div>
-			        <div id="footer">
-					      {% block footer %}
-					            &copy; Copyright 2017 by <a href="https://cospas-sarsat.int/">International Cospas-Sarsat Programme</a>.
-						          {% endblock %}
-</div>
+
+
+<body>
+						 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+				  <a class="navbar-brand" href="#">Carousel</a>
+				  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				  </button>
+				  <div class="collapse navbar-collapse" id="navbarCollapse">
+					<ul class="navbar-nav mr-auto">
+					  <li class="nav-item active">
+						<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+					  </li>
+					  <li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					  </li>
+					  <li class="nav-item">
+						<a class="nav-link disabled" href="#">Disabled</a>
+					  </li>
+					</ul>
+
+				  </div>
+						 </nav>
+
+
+
+			    {% block content %}{% endblock %}
+
+
+
+
+			            <div id="footer">
+						{% block footer %}
+							<br><br><br>&copy; Copyright 2017 by <a href="https://cospas-sarsat.int/">International Cospas-Sarsat Programme</a>.
+						{% endblock %}
+				</div>
 
 </body>
 </html>

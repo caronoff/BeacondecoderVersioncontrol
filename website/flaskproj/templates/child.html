@@ -4,13 +4,11 @@
 
 {% block head %}
   {{ super() }}
-
-
 <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='css/signin.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/inputgroup.css') }}" rel="stylesheet">
 
-      {% endblock %}
+{% endblock %}
 
 <style type="text/css">
     .important { color: #336699; }
@@ -42,10 +40,7 @@
       <form class="form-signin" id="decodeHex" action="/output" >
         <h2 class="form-signin-heading">Beacon Message Decoder</h2>
         <label for="inputhexcode" class="sr-only">Enter hexidecimal code</label>
-
-
           <div class="input-group" data-validate="hex">
-
         <input type="text" name="hexcode" id="inputhexcode" class="form-control" placeholder="Enter hexidecimal code" required autofocus>
           <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
           </div>
@@ -69,11 +64,9 @@
       </div>
 </div> <!-- /container -->
 
-
 {% endblock %}
 
 {% block scripts %}
-
 {{ super() }}
 
 
@@ -120,13 +113,9 @@ $('#inputhexcode').on('keyup change',function()
         $group = $(this).closest('.input-group'),
 		$addon = $group.find('.input-group-addon'),
 		$icon = $addon.find('span');
-		$("#echoResult").text("")
         $.getJSON
             ($SCRIPT_ROOT+'/validatehex', {hexcode: $('input[name="hexcode"]').val()},function(data)
                 {$("#statuscheck").text(data.echostatus);
-
-
-
                 if(data.echostatus=='valid'){
                         $form.find(':input[type="submit"]').prop('disabled', false);
                         $addon.removeClass('danger');
@@ -134,7 +123,6 @@ $('#inputhexcode').on('keyup change',function()
 				        $icon.attr('class', 'glyphicon glyphicon-ok');
                         $("#echoResult").text("");
                         $('#hexAlert').hide('fade');
-
                         }
 
                 else{

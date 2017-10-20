@@ -5,7 +5,7 @@ body {
 }
 
 .form-signin {
-  max-width: 330px;
+  max-width: 630px;
   padding: 15px;
   margin: 0 auto;
 }
@@ -36,4 +36,9 @@ body {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
 }

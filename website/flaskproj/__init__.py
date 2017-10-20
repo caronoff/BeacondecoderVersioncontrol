@@ -37,23 +37,21 @@ def output():
     if request.method== 'GET':
         hexcode= str(request.args.get('hexcode'))
         username = str(request.args.get('username'))
-    decoded = [[hexcode,username,'hello','stuf'],['abc','123','bye','blah']]
-
-
-
-    if len(hexcode) == 63 or len(hexcode) == 51 or len(hexcode) == 75 or len(hexcode) == 23:
-        beacon = Gen2.SecondGen(hexcode)
+        if len(hexcode) == 63 or len(hexcode) == 51 or len(hexcode) == 75 or len(hexcode) == 23:
+            beacon = Gen2.SecondGen(hexcode)
+        else:
+            beacon = decodehex2.BeaconHex(hexcode)
+        print(hexcode)
+        beacon.processHex(hexcode)
+        ctry = beacon.country()
+        mid = str(ctry[0][1])
+        name = str(ctry[1][1])
+        print(name)
+        decoded = beacon.tablebin
+        return render_template('output.html',hexcode=hexcode,decoded=decoded)
     else:
-        beacon = decodehex2.BeaconHex(hexcode)
-    print(hexcode)
+        return render_template('child.html', title='Home', user="")
 
-    beacon.processHex(hexcode)
-    ctry = beacon.country()
-    mid = str(ctry[0][1])
-    name = str(ctry[1][1])
-    print(name)
-
-    return render_template('output.html',hexcode=hexcode,decoded=beacon.tablebin)
 
 @app.route("/")
 @app.route("/index")

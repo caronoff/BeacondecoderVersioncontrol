@@ -1,16 +1,41 @@
 {% extends "layout.html" %}
 {% block title %}Decoded Beacon {% endblock %}
+{% block head %}
+  {{ super() }}
+
+
+<!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/signin.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/inputgroup.css') }}" rel="stylesheet">
+
+      {% endblock %}
  {% block content %}
-<h1>Index {{username}}</h1>
-<div class="decodetable">
-	<p><strong>Results echo </strong></p>
-	<table>
-		<tr><td>hello</td>
-		<td> {{ hexcode }} </td></tr>
-		<tr><td>hello2</td>
-		<td> {{ hexcode }} </td></tr>
-	</table>
+
+
+<div class="container">
+  <h2>Decoded Beacon Message</h2>
+  <p>The hex code decoded is: <strong>{{hexcode}}</strong></p>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Bit Ranges</th>
+        <th>Binary value</th>
+        <th>Name</th>
+		<th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+	{% for item in decoded %}
+      <tr>
+		  {% for cell in item %}
+        <td>{{cell}}</td>
+        {% endfor %}
+      </tr>
+	{% endfor %}
+    </tbody>
+  </table>
 </div>
+
 {% endblock %}
 
 

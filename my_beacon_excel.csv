@@ -1,30 +1,29 @@
 Bit Range,Bit Value,Number of Bits,Field Name,Field Value
-1-20,'00000000000001100100,20,Type Approval Certificate #:,100
-21-30,'0001100100,10,Serial Number:,100
-31-40,'0101100100,10,Country code:,356 Panama
-41,'0,1,Status of homing device:,"Beacon is not equipped with any homing signals or they have been deliberately disabled.  If beacon has been activated, no homing device is functional or it has been deliberately disabled"
-42,'0,1,Self-test function:,Self-test transmission
-43,'0,1,User cancellation:,Normal beacon operation (transmitting a distress or self-test message)
-44-66,'00000000000000000000000,23,Latitude:,0.0 N
-67-90,'100010110000000000000000,24,Longitude:,22.0 W
-91-93,'000,3,Vessel ID:,No aircraft or maritime identity
-94-137,'00000000000000000000000000000000000000000000,44,Spare:,All 0 - OK
-138-154,'11111111111111111,17,Spare:,OK
-155-158 (Rotating field 1-4),'0000,4,Rotating Field Type:,(#0) C/S G.008 Objective Requirements
-159-164 (Rotating field 5-10),'000000,6,Elapsed time since activation:,0 hours
-165-175 (Rotating field 11-21),'00000000000,11,Time from last encoded location:,0 minutes
-176-185 (Rotating field 22-31),'0000011001,10,Altitude of encoded location: ,0 m
-186-189 (Rotating field 32-34),'1111,4,HDOP:,DOP not available
-190-193 (Rotating field 35-39),'1111,4,VDOP:,DOP not available
-194-194 (Rotating field 40-41),'00,2,Automated/manual activation notification,Manual activation by user
-196-198 (Rotating field 42-44),'111,3,Remaining battery capacity,battery capacity not available
-199-200 (Rotating field 45-46),'00,2,GNSS status,No fix
-201-202 (Rotating field 47-48),'00,2,Spare,OK
-,',0,Beacon 23 Hex ID:,AC940019064000000000001
-203-204,'00,2,To make length 204,
-205-252,'101010010010000100011100100011111000011100001100,48,BCH,
-,',0,Beacon message:,000641916400000022C0000000000000007FFFC000000CFF9C0A9211C8F870C
-Information bits,'0000000000000110010000011001000101100100000000000000000000000000001000101100000000000000000000000000000000000000000000000000000000000000011111111111111111000000000000000000000000001100111111111001110000
-'00
-BCH,'101010010010000100011100100011111000011100001100
-'101010010010000100011100100011111000011100001100
+1-20,"""00000000100100101001",Type Approval Certificate #:,2345
+21-30,"""1111100111",Serial Number:,999
+31-40,"""0100111100",Country code:,316 Canada
+41,"""0",Status of homing device:,"Beacon is not equipped with any homing signals or they have been deliberately disabled.  If beacon has been activated, no homing device is functional or it has been deliberately disabled"
+42,"""0",Self-test function:,Self-test transmission
+43,"""0",User cancellation:,Normal beacon operation (transmitting a distress or self-test message)
+44-66,"""10101100000000000000000",Latitude:,44.0 S
+67-90,"""100010110000000000000000",Longitude:,22.0 W
+91-93,"""010",Vessel ID Type,Radio call sign
+94-135,"""110011011101111000110100110010110110101011",Radio Callsign,B1ASDFG
+136-137,"""00",Spare should be 0,OK
+138-154,"""11111111111111111",Spare:,OK
+155-158 (Rotating field 1-4),"""0000",Rotating Field Type:,(#0) C/S G.008 Objective Requirements
+159-164 (Rotating field 5-10),"""010110",Elapsed time since activation:,22 hours
+165-175 (Rotating field 11-21),"""00000010110",Time from last encoded location:,22 minutes
+176-185 (Rotating field 22-31),"""0000111011",Altitude of encoded location: ,544 m
+186-189 (Rotating field 32-34),"""0010",HDOP:,DOP >2 and <=3
+190-193 (Rotating field 35-39),"""0011",VDOP:,DOP >3 and <=4
+194-194 (Rotating field 40-41),"""00",Automated/manual activation notification,Manual activation by user
+196-198 (Rotating field 42-44),"""100",Remaining battery capacity,>50% and <=75% remaining
+199-200 (Rotating field 45-46),"""10",GNSS status,3D location
+201-202 (Rotating field 47-48),"""00",Spare,OK
+,"""",Beacon 23 Hex ID:,A794024A7E759BBC6996D59
+203: (bch),"""11000001011011010011111111001111110110001000001000",Encoded BCH,Encoded BCH
+Calculated,"""110000010110110100111111110011111101100010000010",Computed,
+,"""",Number of BCH errors:,0
+251-252 (padding),"""00",00,63 hex code of 252 bits
+Beacon message:,"""00929F9D3C15800022C000166EF1A65B567FFFC1602C1D9192305B4FF3F6208",,

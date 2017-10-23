@@ -964,7 +964,7 @@ if userInput in 'Yy':
 
 
 
-    testhex = Func2.bin2hex(bchbase + '00' + BCH)
+    testhex = Func2.bin2hex(bchbase + BCH + '00')
     printtxt('\nYour complete beacon message is: ' + testhex)
     fhex.write('\n'+testhex)
 

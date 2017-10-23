@@ -29,10 +29,10 @@ class Bch:
         return 'BCH-{} errors: {}'.format(str(n), self.bch[3+int(n)])
 
     def bch1calc(self):
-        return 'BCH-1 Calculated:  {bchcalc}  Errors: {e}'.format(bchcalc=self.bch[0], e=self.bch[4])
+        return 'BCH-1 Calculated (86-106):  {bchcalc}  Errors: {e}'.format(bchcalc=self.bch[0], e=self.bch[4])
 
     def bch2calc(self):
-        return 'BCH-2 Calculated:  {bchcalc}  Errors: {e}'.format(bchcalc=self.bch[1], e=self.bch[5])
+        return 'BCH-2 Calculated (133-144):  {bchcalc}  Errors: {e}'.format(bchcalc=self.bch[1], e=self.bch[5])
 
     def writebch1(self):
         return 'BCH-1 Encoded: {bch1enc}   BCH-1 Calculated:  {bchcalc}  Errors: {e}'.format(bch1enc=self.bch[2], bchcalc=self.bch[0], e=self.bch[4])
@@ -651,13 +651,23 @@ class BeaconHex(HexError):
                 self.tablebin.append(['67-75',str(self.bin[67:76]),'Latitude','{} ({})'.format(lat,declat)])
                 self.tablebin.append(['76-85',str(self.bin[76:86]),'Longitude','{} ({})'.format(lng,declng)])
                 self.tablebin.append(['86-106',str(self.bin[86:107]),'BCH 1',str(self.bch.bch1calc())])
-                self.tablebin.append(['107-108',str(self.bin[107:109]),'supplementary','supplementary'])
+                #self.tablebin.append(['107-108',str(self.bin[107:109]),'supplementary','supplementary'])
                 self._locd['encpos']=definitions.enc_delta_posflag[self.bin[107]]
                 self.encpos=str(self.bin[107])
                 self._locd['homer']=definitions.homer[self.bin[108]]
                 self.tablebin.append(['107',str(self.bin[107]),'encoded position source',self._locd['encpos']])
                 self.tablebin.append(['108',str(self.bin[108]),'homer',self._locd['homer']])
-                self.tablebin.append(['109-114',str(self.bin[109:115]),'reserved','reserved for RLS data'])                
+                self.tablebin.append(['109-114',str(self.bin[109:115]),'reserved','reserved for RLS data'])
+                self.tablebin.append(['109', str(self.bin[109]), 'Process automatically RLM (Type-1)', ['Acknowledgement Type-1 not requested and not accepted by this beacon','Acknowledgement Type-1 accepted by this beacon'][int(self.bin[109])]])
+                self.tablebin.append(['110', str(self.bin[110]), 'Process manually RLM (Type-2)',['Manually generated RLM not accepted by this beacon','Manually generated RLM accepted by this beacon'][int(self.bin[110])]])
+                self.tablebin.append(['111', str(self.bin[111]), 'Feedback on RLM Type-1',
+                                      ['Acknowledgement Type-1 not (yet) received by this beacon',
+                                       'Acknowledgement Type-1 (automatic acknowledgement) received by this beacon'][int(self.bin[111])]])
+                self.tablebin.append(['112', str(self.bin[112]), 'Feedback on RLM Type-2',
+                                      ['Acknowledgement Type-2 not (yet) received by this beacon',
+                                       'Acknowledgement Type-2 received by this beacon'][int(self.bin[112])]])
+                self.tablebin.append(['113-114', str(self.bin[113:115]), 'RLS Provider',
+                                      {'00':'Spare','11':'Spare','01':'GALILEO Return Link Service Provider','10':'GLONASS Return Link Service Provider'}[str(self.bin[113:115])]])
                 finallat=finallng='Not Used'                    
                 latdelta,longdelta,ltoffset,lgoffset = Fcn.latlongresolution(self.bin,115,133)            
                 self.tablebin.append(['115-123',str(self.bin[115:124]),'Latitude offset',ltoffset])

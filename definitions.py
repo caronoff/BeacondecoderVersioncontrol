@@ -183,14 +183,32 @@ beacon_type = {'00':'ELT',
                '10':'PLB',
                '11':'RLS Test Protocol'}
 
+beacon_rls = {'00':'No automatic RLM Type-1 - No manual RLM Type 2 accepted',
+              '01':'No automatic RLM Type 1 -  Manual RLM Type 2 accepted ',
+              '10':'Automatic RLM Type-1 - No manual RLM Type 2 accepted',
+              '11':'Automatic RLM Type-1 - Manual RLM Type 2 accepted'}
+
 rls_provider = {'001':'GALILEO Return Link Service Provider',
-                '010':'GLONASS Return Link Service Provider'}
+                '010':'GLONASS Return Link Service Provider',
+                '000':'spare',
+                '011':'spare',
+                '100':'spare',
+                '101':'spare',
+                '110':'spare',
+                '111':'spare'}
 
 deactivation = {'00':'Spare',
                 '10':'Manual de-activation by user',
                 '01':'Automatic de-activation by external means',
                 '11':'Spare'}
-
+vessel_id = {'000':'No aircraft or maritime identity',
+             '001':'Maritime MMSI',
+             '010':'Radio call sign',
+             '011':'Aircraft Registration Marking (Tail Number)',
+             '100':'Aircraft aviation 24 Bit Address',
+             '101':'Aircraft operator and serial number',
+             '110':'Spare',
+             '111':'Spare'}
 baudot2 = {'': '100000', ' ': '100100', '-': '011000', '/': '010111', '1': '011101', '0': '001101',
            '3': '010000', '2': '011001', '5': '000001', '4': '001010', '7': '011100', '6': '010101',
            '9': '000011', '8': '001100', '?': '000000', 'A': '111000', 'C': '101110', 'B': '110011',

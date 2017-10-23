@@ -231,6 +231,7 @@ class MainWindow(QMainWindow, ui_beaconhex.Ui_BeaconDecoder):
     def file_dialog(self):
         fd = QFileDialog(self)
         self.filename = fd.getOpenFileName()
+
         from os.path import isfile
         if isfile(self.filename):
             self.tableWidget.clear()
@@ -280,6 +281,11 @@ class ThreadClassSave(QThread):
         super(ThreadClassSave, self).__init__(parent)
         self.filename = filename
         self.filesave = filesave
+
+        self.filetxt = filesave.split('.')[0]+'.txt'
+
+        print self.filetxt
+
         self.dialog = Progress()
         self.dialog.show()
         self.secgen = secgen
@@ -297,6 +303,7 @@ class ThreadClassSave(QThread):
         print count
         hexcodes = open(self.filename)
         decoded = open(self.filesave, 'w')
+        decodedtxt = open(self.filetxt,'w')
 
 
 
@@ -350,7 +357,7 @@ class ThreadClassSave(QThread):
         else:
             c = decodehex2.BeaconHex()
 
-            decoded.write("""Input Message,Self Test,15 Hex ID,Complete,Test Coded,Beacon Type,TAC,Country Code,Country Name,Location Type,Position Source,Course Lat,Course Long,Final Lat,Final Long,Fixed Bits\n""")
+            decoded.write("""Input Message,Self Test,15 Hex ID,Complete,Test Coded,Beacon Type,TAC,Country Code,Country Name,Location Type,Position Source,Course Lat,Course Long,Final Lat,Final Long,Fixed Bits,binary complete\n""")
 
             for line in hexcodes.readlines():
                 i += 1
@@ -396,10 +403,13 @@ class ThreadClassSave(QThread):
                     decoded.write('{},'.format(finallong))
                     decoded.write('{},'.format(c.fixedbits))
 
+
+
                 except decodehex2.HexError as e:
 
                     decoded.write(e.value)
                 decoded.write('\n')
+                decodedtxt.write('\n{} {} {} {} {} {}'.format(str(c.bin[25:37]),str(c.bin[37:86]),str(c.bch.bch[0]),c.bin[107:115],c.bin[115:133],c.bch.bch[1]))
 
         decoded.close()
         self.emit(SIGNAL('EXPORT'), 100)

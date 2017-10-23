@@ -12,7 +12,7 @@ google_map =                 '''<!DOCTYPE html>
                 padding: 0px
               }
             </style>
-            <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBw4IpZdm6D7ob00fF9F9TjuZ2Eeif9QtE"></script>
             <script>
 
                 var map;
@@ -26,17 +26,19 @@ google_map =                 '''<!DOCTYPE html>
 
 
                  function Marker(Lat,Lng) {
-                  var Centre = new google.maps.LatLng(Lat,Lng);
+                    var myLatLng = {lat: Lat, lng: Lng}
+                  
                     var mapOptions = {
                     zoom: 2,
                     minZoom: 2,
-                    center: Centre,
+                    center: myLatLng,
                     }
-                map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions); 
-                var mark = new google.maps.LatLng(Lat,Lng);
-                //return Skatepark;
+                    var map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions); 
+                    var mark = new google.maps.LatLng(Lat,Lng);
+                    var markerplace = new google.maps.Marker({position: myLatLng,map: map,title: 'Hello World!'});
+                
 
-                AddMarker(mark); }
+                    AddMarker(myLatLng); }
 
 
 

@@ -1,14 +1,17 @@
 Bit Range,Bit Value,Field Name,Field Value
-1-20,00000000000001100100,Type Approval Certificate #:,100
-21-30,0001100100,Serial Number:,100
+1-20,00000000000000000001,Type Approval Certificate #:,1
+21-30,0000000001,Serial Number:,1
 31-40,0101100100,Country code:,356 Panama
 41,0,Status of homing device:,"Beacon is not equipped with any homing signals or they have been deliberately disabled.  If beacon has been activated, no homing device is functional or it has been deliberately disabled"
 42,0,Self-test function:,Self-test transmission
 43,0,User cancellation:,Normal beacon operation (transmitting a distress or self-test message)
-44-66,00000000000000000000000,Latitude:,0.0 N
-67-90,100010110000000000000000,Longitude:,22.0 W
-91-93,000,Vessel ID:,No aircraft or maritime identity
-94-137,00000000000000000000000000000000000000000000,Spare:,All 0 - OK
+44-66,01111111000001111100000,Latitude:,No latitude data available
+67-90,011111111111110000011111,Longitude:,No longitude data available
+91-93,001,Vessel ID Type,Maritime MMSI
+94-123,010101001110000010001011001000,Unique ship station identity MIDxxYYYY:,356000456
+,,Flag state of vessel:,356 Panama
+,,Unique vessel number,000456
+124-137,10101010101010,EPIRB-AIS System Identity:,No EPIRB-AIS System
 138-154,11111111111111111,Spare:,OK
 155-158 (Rotating field 1-4),0000,Rotating Field Type:,(#0) C/S G.008 Objective Requirements
 159-164 (Rotating field 5-10),000000,Elapsed time since activation:,0 hours
@@ -20,7 +23,11 @@ Bit Range,Bit Value,Field Name,Field Value
 196-198 (Rotating field 42-44),111,Remaining battery capacity,battery capacity not available
 199-200 (Rotating field 45-46),00,GNSS status,No fix
 201-202 (Rotating field 47-48),00,Spare,OK
-,,Beacon 23 Hex ID:,AC940019064000000000001
+,,Beacon 23 Hex ID:,AC9400004012A9C11645555
+203-204 (padding),00,,
+205: (bch),111011010101100000111010010000010011101100110100,Encoded BCH,Encoded BCH
+Calculated,111011010101100000111010010000010011101100110100,Computed,
+,,Number of BCH errors:,0
 203-204,00,To make length 204,
-205-252,101010010010000100011100100011111000011100001100,BCH,
-,,Beacon message:,000641916400000022C0000000000000007FFFC000000CFF9C0A9211C8F870C
+205-252,111011010101100000111010010000010011101100110100,BCH,
+,,Beacon message:,00001005640FE0F81FFF07CAA7045915557FFFC000000CFF9C0ED583A413B34

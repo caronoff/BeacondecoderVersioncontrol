@@ -253,12 +253,9 @@ class SecondGen(Gen2Error):
             # 48-BIT BCH ERROR CORRECTING CODE #
             ####################################
             if len(self.bits) == 253:
-                self.tablebin.append(['203-204 (padding)',
-                                      self.bits[203:205],
-                                      '',
-                                      ''])
-                self.tablebin.append(['205: (bch)',
-                                      self.bits[205:],
+
+                self.tablebin.append(['203: (bch)',
+                                      self.bits[203:],
                                       'Encoded BCH',
                                       'Encoded BCH'])
                 ##Calculate the BCH
@@ -270,13 +267,17 @@ class SecondGen(Gen2Error):
                                       ''])
 
                 ##Compare to the BCH in the beacon message
-                self.BCHerrors = Func.errors(self.calculatedBCH, self.bits[205:])
+                self.BCHerrors = Func.errors(self.calculatedBCH, self.bits[203:])
 
                 ##Write the number of errors to our table
                 self.tablebin.append(['',
                                       '',
                                       'Number of BCH errors:',
                                       str(self.BCHerrors)])
+                self.tablebin.append(['251-252 (padding)',
+                                      self.bits[251:],
+                                      '00',
+                                      '63 hex code of 252 bits'])
         elif len(self.bits) == 92:
             self.type = ('Hex string length of {}. \nBit length of {}. \nThis is a second generation beacon UIN'.format(str(len(strhex)),str(len(self.bits))))
             ##Add an additional bit to ensure that bits in array line up with bits in documentation

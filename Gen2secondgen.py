@@ -254,7 +254,7 @@ class SecondGen(Gen2Error):
             ####################################
             if len(self.bits) == 253:
 
-                self.tablebin.append(['203: (bch)',
+                self.tablebin.append(['203-250',
                                       self.bits[203:],
                                       'Encoded BCH',
                                       'Encoded BCH'])
